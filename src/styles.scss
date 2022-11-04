@@ -1,0 +1,229 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "../node_modules/primeng/resources/themes/md-light-indigo/theme.css";
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeicons/primeicons.css";
+@import url(variables.scss);
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f2f3f5;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+::-webkit-scrollbar:vertical {
+  width: 10px;
+}
+::-webkit-scrollbar-button:increment, ::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--ligth-gray3);
+  height: 50px;
+}
+ /* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(53, 52, 52, 0.794);
+  background-color: var(--ligth-gray2);
+}
+
+
+.container-drawer{
+  height: calc(100vh - 70px);
+  padding: 25px;
+  margin: 25px;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+.prog-card{
+
+  /* width */
+  ::-webkit-scrollbar {
+   width: 20px;
+ }
+ mat-drawer-inner-container{
+  overflow: hidden !important;
+  background-color: #b30000;
+}
+
+ /* Track */
+ ::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 5px grey; 
+   border-radius: 10px;
+ }
+  
+ /* Handle */
+ ::-webkit-scrollbar-thumb {
+   background: red; 
+   border-radius: 10px;
+ }
+ 
+ /* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+   background: #b30000; 
+ }
+ 
+ }
+
+#mostrarP {
+  display: none;
+
+  &:checked~#cardP {
+    #icon-m {
+      display: block !important;
+    }
+
+    display: block !important;
+    transform: translateY(-67vh) translateX(-0vh) scale(1);
+
+
+
+  }
+
+}
+
+#mostrarP {
+  display: none;
+
+  &:checked~#icon-m {
+
+    background-color: black !important;
+
+  }
+}
+
+#menu-show {
+  display: none;
+  border: none;
+
+  &:checked~#card-log {
+    display: block !important;
+    z-index: 5;
+
+
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+
+//menu creación programa
+
+mat-chip {
+  float: left;
+}
+
+
+#a {
+  fill: #0057e7 !important;
+}
+
+
+.mat-drawer-backdrop.mat-drawer-shown {
+  visibility: hidden !important;
+}
+
+
+@media screen and (max-width: 1049px) {
+
+  #facultades {
+    display: none;
+  }
+
+  #programas {
+    display: none;
+  }
+
+  #procesos {
+    display: none;
+  }
+
+  #hidediv {
+    display: none;
+  }
+}
+
+.selecionado {
+  border: 4px solid var(--blue);
+  background-color: var(--ligth-blue);
+}
+
+mat-ink-bar{
+  background-color: #161718;
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background: #726d6f;
+  color: #ffffff;
+}
+
+ .p-carousel-indicators{
+  display: none !important;
+}
+
+.btn-add-program {
+  text-align: right !important;
+  color: var(--blue2);
+  font-size: 2em;
+  height: 1em;
+  width: 1em;
+}
+
+.p-carousel-container {
+  width:80vh;
+  margin:0px auto;
+  
+ 
+}
+.p-carousel-content{
+  margin-left:-3vh;
+  height: 50vh;
+}
+
+
+@media screen and (max-width: 1700px), 
+       screen and (max-height: 733px) {
+ 
+.p-carousel-container {
+  width:95vh;
+  margin:0px auto;
+ 
+}
+.p-carousel-content{
+  margin-left:-3vh;
+}
+}
+.mat-paginator-page-size-label{
+  font-size: 1.5vh;
+}
+

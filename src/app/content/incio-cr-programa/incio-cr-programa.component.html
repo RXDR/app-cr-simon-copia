@@ -1,0 +1,232 @@
+<div class="container mx-auto px-20 py-10 row">
+  <div class="col-6 ">
+    <mat-card id="facultades">
+      <div class="row px-3">
+        <div class="col">
+          <label class="col-sm-2 col-form-label">Facultades</label>
+          <select class="custom-select-input form-control" (change)="onChangeFacultad($event.target)">
+            <option class=" form-control text-left " [value]="0">seleccione...</option>
+            <option class=" form-control text-left " *ngFor="let facultad of facultades" [value]="facultad.id">
+              {{facultad.nombre}}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <label class="col-sm-2 col-form-label">Nivel</label>
+          <select class="custom-select-input form-control" (change)="OnChangeNivelAcedemico($event.target)">
+            <option [value]="4" class=" form-control text-left " [value]="0" >seleccione...</option>
+            <option class=" form-control text-left" *ngFor="let nivel of nivelesAcPrg" [value]="nivel.id">
+              {{ nivel.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <label class="col-sm-2 col-form-label">Estado</label>
+          <select class="custom-select-input form-control" [(ngModel)]="estadoFilter" (change)="OnEstadoChange()">
+            <option value="true" class="form-control text-left">
+              Activo
+            </option>
+            <option value="false" class="form-control text-left">
+              Inactivo
+            </option>
+          </select>
+        </div>
+      </div>
+    </mat-card>
+    <div class="col mt-3 " style="padding: 0px;">
+      <mat-card id="programas" class="lg:max-w-1xl 2xl:text-2xl rounded-xl shadow-2xl shadow-gray-500 left-bottom-card "
+        style="padding: 1.5em;">
+        <div class="col-md-12 col-md-3">
+          <div class="group-search">
+            <h5 class="card-title" style="margin-top: 1vh">Programas</h5>
+            <div class="input-search-group flex">
+              <img alt="" src="../../../assets/Iconos/icon-buscar.svg" />
+              <input type="search" placeholder="Buscar..." class="remove-input" (keyup)="onKeyUp()"
+                [(ngModel)]="nombreFiltro" [ngModelOptions]="{ standalone: true }" />
+            </div>
+
+            <mat-icon (click)="addPrograma()" class="btn-add-program">add_circle
+            </mat-icon>
+          </div>
+
+        </div>
+
+
+        <ul class="list-container">
+          <li *ngFor="let programa of programas" style="text-align: left; width: auto; ">
+            <button autofocus style="width: 100%; white-space: normal; text-align: left" type="button"
+              class="btn nav-link active " [class.selecionado]="programa.id==programaSelected"
+              (click)=" hideDivProces(hideDiv)">
+              <p class="lg:text-xl mx-0 p-2 uppercase">{{ programa.nombre }}</p>
+            </button>
+          </li>
+          <li > <app-spinner></app-spinner> <span class="mt-10" *ngIf="load">No hay información que mostrar</span></li>
+
+          
+        </ul>
+
+      </mat-card>
+    </div>
+
+  </div>
+  <div class="col-6">
+
+    <!--col procesos-->
+
+    <div class="col" style="width:70vh">
+      <!--carga-->
+
+      <mat-card class="rigth-card mx-auto  " *ngIf="hideDiv" id="hidediv" style="height:73vh;padding:4vh;">
+
+        <div class="col py-4 mx-auto text-center selecione-programa mt-3" style="height:60vh; margin-bottom: -15vh; ">
+          <img src="../../../assets/images/7294.svg" class="mx-auto h-60 mt-16" alt=""><br>
+          <br>
+          <h1 class="mx-auto" style="font-size:2rem; color:#b2b5ba">Seleccione un Programa</h1>
+
+        </div>
+
+      </mat-card>
+
+      <!--end-->
+      <mat-card class="w-full" id="procesos" *ngIf="showProcesosBox">
+        <h5 class="card-title">Procesos</h5>
+        <div class="card-header">
+          <div class="row">
+            <div class="col">
+              <mat-chip-list>
+                <mat-chip *ngIf="procesButton ==4" class="btn btn-warning"> <button matChipRemove
+                    style="background-color: #F8F6E5;">
+                    <mat-icon class="icon-procesos">fiber_manual_record</mat-icon>
+                  </button>
+                  <p class=" mt-3 lg:text-lg p-btn-matchip">Inactivación
+                  </p>
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+          <div class="row" >
+
+            <div class="col mt-1" *ngFor="let proceso of procesosToShow">
+
+              <mat-chip-list *ngIf="showProcesosBox">
+                <p-confirmPopup></p-confirmPopup>
+
+                <mat-chip class="btn btn-secondary" [ngClass]="{ 'btn-warning': proceso == procesoPrograma }"
+                  *ngIf="!(procesoPrograma && proceso != procesoPrograma || (denominacionSelected.estado == false))">
+                  <button matChipRemove style="background-color: #F8F6E5;">
+                    <mat-icon [ngClass]="{ 'icon-procesos': proceso == procesoPrograma }">fiber_manual_record</mat-icon>
+                  </button>
+                  <p class=" mt-3 lg:text-lg p-btn-matchip" (click)="selectProcess(proceso)">{{ proceso.nombre }}
+                  </p>
+                </mat-chip>
+              </mat-chip-list>
+
+            </div>
+
+          </div>
+
+
+        </div>
+        <div class="card-body mx-auto" style="padding:4vh;">
+          <div class="row">
+            <div class="col-8">
+              <h5 class="titulobasico" style="color:#476d84">Datos Básicos</h5>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <label class="labeltitulo">Nombre del programa</label>
+              <p>
+                {{ this.denominacionSelected?.programa.nombre | titlecase }}
+              </p>
+
+            </div>
+            <!---->
+            <div class="col">
+
+              <label class="labeltitulo">Snies</label>
+              <p>{{ denominacionSelected?.snies | titlecase }}</p>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+
+              <label class="labeltitulo">Nivel de Formacíon</label>
+              <p>
+                {{
+                denominacionSelected?.programa.nivelAcademico.nombre
+                | titlecase
+                }}
+              </p>
+
+            </div>
+            <div class="col">
+              <label class="labeltitulo">Facultad</label>
+              <p>{{ denominacionSelected?.programa.facultad.nombre | titlecase }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+
+              <label class="labeltitulo">Titulo masculíno</label>
+              <p>{{ denominacionSelected?.tituloM | titlecase }}</p>
+
+            </div>
+            <div class="col">
+
+              <label class="labeltitulo">Titulo Femeníno</label>
+              <p>{{ denominacionSelected?.tituloF | titlecase }}</p>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+
+              <label class="labeltitulo">Modalidad</label>
+              
+
+            </div>
+            <div class="col">
+
+              <label class="labeltitulo">Ubicación</label>
+              <p></p>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+
+              <label class="labeltitulo">Numero de estudiante Primer periodo</label>
+              <p>{{ denominacionSelected?.snies | titlecase }}</p>
+
+            </div>
+          </div>
+        </div>
+        <mat-divider  style="margin-top: 3vh;"></mat-divider>
+
+        <div class="flex-item p-2 mt-10">
+          <div class="mt-3 text-sm font-medium" style="float: right; margin-left: 10vh">
+            <button class="btn btn-primary" style="float: right !important; font-size: 12px">
+              ver detalles
+            </button>
+          </div>
+          <p-avatarGroup styleClass="mb-3">
+            <p-avatar image="../../../assets/images/logo.svg" size="large" shape="circle"></p-avatar>
+            <p-avatar image="../../../assets/images/logo.svg" size="large" shape="circle"></p-avatar>
+            <p-avatar image="../../../assets/images/logo.svg" size="large" shape="circle"></p-avatar>
+            <p-avatar image="../../../assets/images/logo.svg" size="large" shape="circle"></p-avatar>
+            <p-avatar image="../../../assets/images/logo.svg" size="large" shape="circle"></p-avatar>
+            <p-avatar label="+2" shape="circle" size="small" [style]="{
+                'background-color': 'rgb(107 39 176)',
+                color: '#ffffff'
+              }"></p-avatar>
+          </p-avatarGroup>
+
+        </div>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

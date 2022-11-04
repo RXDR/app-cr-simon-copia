@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'usb';
+  src:  url('fonts/usb.eot?q9onzn');
+  src:  url('fonts/usb.eot?q9onzn#iefix') format('embedded-opentype'),
+    url('fonts/usb.ttf?q9onzn') format('truetype'),
+    url('fonts/usb.woff?q9onzn') format('woff'),
+    url('fonts/usb.svg?q9onzn#usb') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="usb-"], [class*=" usb-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'usb' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.usb-logo:before {
+  content: "\e900";
+  color: #09843b;
+}
+.usb-icon-progamas:before {
+  content: "\e901";
+  color: #9b9999;
+}

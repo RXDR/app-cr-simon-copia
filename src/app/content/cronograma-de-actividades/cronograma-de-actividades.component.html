@@ -1,0 +1,165 @@
+<div class="2xl:container mx-auto  mt-16 h-full">
+  <div class="col">
+    <mat-card id="facultades" class=" py-4 text-left">
+      <div class="row">
+        <div class="col-2  ">
+          <label class="col-sm-2 col-form-label">Facultades</label>
+        </div>
+        <div class="col-2">
+          <label class="col-sm-2 col-form-label">Nivel</label>
+        </div>
+        <div class="col-2">
+          <label class="col-sm-2 col-form-label">Programa</label>
+        </div>
+      </div>
+      <div class="row -mt-2">
+        <div class="col-2">
+          <select class="custom-select-input form-control py-0 content-select select"
+            (change)="onChangeFacultad($event.target)">
+            <option class=" form-control text-left ">seleccione...</option>
+            <option class=" form-control text-left " *ngFor="let facultad of facultades" [value]="facultad.id"
+              style="align-items: start;">
+              {{facultad.nombre}}
+            </option>
+          </select>
+
+        </div>
+
+        <!--filtro-->
+        <div class="col-2">
+          <select class="custom-select-input form-control py-0" (change)="OnChangeNivelAcedemico($event.target)">
+            <option class=" form-control text-left ">seleccione...</option>
+            <option class=" form-control text-left" *ngFor="let nivel of nivelesAcPrg" [value]="nivel.id">
+              {{ nivel.nombre }}
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="col-3 input-search-group flex mt-1 top-1 pl-1 py-3 mt-2">
+
+          <img alt="" class="h-1" src="../../../assets/Iconos/icon-buscar.svg" />
+          <input type="search" placeholder="Buscar..." class="remove-input scroll-py-24" (keyup)="onKeyUp()"
+            [(ngModel)]="nombreFiltro" [ngModelOptions]="{ standalone: true }" ngDefaultControl />
+
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+  <div class="row">
+    <div class="col-12  mx-auto" *ngFor="let programa of programas|paginate:page_size:page_number;"
+      style="display: flex; justify-content: center;">
+
+      <mat-card style="display: flex; flex-direction: row; width: 90%;padding: -0vh; border-radius: 13px;">
+        <mat-card style="flex: 30;margin-left: -2vh;
+        margin-bottom: 0;
+        
+        
+        border-top: none;
+        border-bottom: none;
+        border-left: none;">
+
+          <mat-card-title class=" px-4">
+            <p>{{programa.programa.nombre}}</p>
+          </mat-card-title>
+
+          <mat-card-content>
+
+            <ul class="list mt-2 py-2 px-4">
+              <li class="">
+                <span class="material-icons">perm_identity</span>
+                <span class="text-muted info">{{programa.programa.formacion}} </span>
+              </li>
+              <li class="">
+                <span class="material-icons">room</span>
+                <span class="text-muted info"> {{programa.programa.ubicacion}} </span>
+              </li>
+              <li class="">
+                <span class="material-icons"> account_box</span>
+                <span class="text-muted info uppercase">{{programa.programa.modalidad}} </span>
+              </li>
+            </ul>
+            <div class="mt-4" style="width:100%;justify-content: space-around;display: flex;">
+              <ul>
+                <li><button (click)="openAddcion(programa.programa);" style="background-color:var(--blue); color:white;padding: 1vh; text-align: center;
+                                        font-size: 15px;border-radius: 5px;top: 467px;
+                                        width: 340px;
+                                        height: 50px;
+                                        ">+Crear Cronograma</button></li>
+                <li><button style="border-color: aqua; padding: 1vh; text-align: center;
+                                          font-size: 15px;border-radius: 5px;top: 467px;
+                                          margin-top: 1vh;
+                                          border: 2px solid var(--blue);
+                                          width: 340px;
+                                          height: 50px;
+                                          ">Ver + historicos</button></li>
+              </ul>
+            </div>
+
+          </mat-card-content>
+
+        </mat-card>
+        <div [ngClass]="{ 'show': programa.cronogramas.length > 0 }"class="text-center selecione-programa" style="padding:-8vh" >
+          <br>
+          <div class="" style="width:50%; margin:0px auto;">
+            <h2 class="mx-auto text-center " style=" color:#b2b5ba; margin-top: 10vh;">Todavía no se ha creado un cronograma para este programa</h2>
+            <button style="background-color: #9C9C9C; color:white; border-radius: 5px;" class="py-2 px-4">Crear cronograma</button>
+          </div>
+         
+        </div>
+        <div style="display: flex; flex: 70; justify-content: space-around; ">
+          <div *ngFor="let crono of programa.cronogramas" style="top:-30vh;left: 14vh; display: flex;">
+            <mat-card class="mx-auto text-center" style="width:240px; box-shadow: none; background-color:#f8f6e5; border-radius: 13px;"
+              (click)="openCodCrono(programa.programa, crono.id); ">
+              <mat-card-content>
+
+                <button class="btn btn-create h-6 mx-auto text-center font-bold px-4 py-4">Modificación</button>
+                <mat-card-subtitle class="mt-6 top-6" style="margin-top:2vh!important ;">
+                  <h1> {{crono.fechaEntrega|date}} </h1><span style="font-size:17px; font-weight:bold;">Fecha de entrega</span>
+                </mat-card-subtitle>
+
+                <p-avatarGroup styleClass="mb-3 mx-auto">
+                  <p-avatar
+                    image="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg"
+                    size="large" shape="circle"></p-avatar>
+                  <p-avatar
+                    image="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg"
+                    size="large" shape="circle"></p-avatar>
+                  <p-avatar
+                    image="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg"
+                    size="large" shape="circle"></p-avatar>
+                  <p-avatar
+                    image="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg"
+                    size="large" shape="circle"></p-avatar>
+                  <p-avatar
+                    image="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg"
+                    size="large" shape="circle"></p-avatar>
+                  <p-avatar label="+2" shape="circle" size="small" [style]="{
+                        'background-color': 'rgb(107 39 176)',
+                        color: '#ffffff'
+                      }"></p-avatar>
+                </p-avatarGroup>
+              </mat-card-content>
+            </mat-card>
+
+          </div>
+        </div>
+        <!-- <div class="row mx-auto  " style="width:50%; top:-30vh">
+          
+        </div> -->
+      </mat-card>
+
+    </div>
+    <div class="col">
+      <mat-card>
+        <mat-paginator [length]="programas?.length" [pageSize]="page_number" [pageSizeOptions]="pageSizeOptions"
+          aria-label="Select page" (page)="handlePage($event)">
+        </mat-paginator>
+      </mat-card>
+
+    </div>
+  </div>
+
+</div>

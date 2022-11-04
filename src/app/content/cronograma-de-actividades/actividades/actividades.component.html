@@ -1,0 +1,148 @@
+<div class="contenedor">
+
+  <div class="main">
+    <!-- <h2 mat-dialog-title>{{ cronograma.titulo }} </h2> -->
+
+    <div class="icons-back" (click)="onNoClick()">
+      <mat-icon style="font-size: 5vh;
+        height: 6vh;">keyboard_backspace</mat-icon>
+    </div>
+    <mat-dialog-content class="mat-typography">
+
+
+      <div class="title">
+
+        <mat-card style="padding:3vh 0 10vh 5vh;">
+
+          <div class="titles mx-auto">
+
+            <mat-card-title> {{nombreAct?.nombre}} </mat-card-title>
+            <button mat-raised-button class="btn btn-primary">{{denominaciones.facultad}} </button>
+            <button mat-raised-button class="btn btn-create">Creación</button>
+          </div>
+
+
+          <mat-card-subtitle>
+            <span class="material-icons">perm_identity</span>
+            <span class="text-muted info-programa uppercase">{{denominaciones.formacion}}</span>
+
+            <span class="material-icons">room</span>
+            <span class="text-muted info-programa uppercase">{{denominaciones.ubicacion}}</span>
+
+            <span class="material-icons">account_box</span>
+            <span class="text-muted info-programa uppercase">{{denominaciones.modalidad}}</span>
+            <button mat-raised-button class="btn btn-info float-right" style="background-color:var(--titulo); 
+            padding:1.2vh ;color: white;font-weight: 700;" (click)="inactivar()">
+              Inactivación</button>
+          </mat-card-subtitle>
+
+        </mat-card>
+
+
+      </div>
+
+
+
+      <div class="cuerpo" style="padding-left:5vh;">
+
+
+        <form (submit)="guardarActividad()" [formGroup]="avanceForm">
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">watch_later</span>
+              <label for="" class="info">Fecha de entrega</label>
+              <input type="text" placeholder="vacio" name="" formControlName="fecha" [value]="nombreAct?.fechaEntrega|date">
+            </div>
+
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">notifications_none</span>
+              <label for="" class="info">Recordar</label>
+              <input type="text" placeholder="vacio" name="" id="" [value]="nombreAct?.dias_notificacion">
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">notes</span>
+              <label for="" class="info">Notificar a</label>
+              <select  placeholder="vacio" name="" id="" >
+                <option [value]="nombreAct?.notificarA">{{nombreAct?.notificarA}}</option>
+              </select>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+          <div class="div-avances">
+            <div class="nuevo-avance">
+              <div>
+                <p> <span class="material-icons text-lg">add</span>
+                  Nuevo Avance
+                </p>
+              </div>
+
+            </div>
+
+
+            <!-- Text para el nuevo avance -->
+            <div class="crear-avance">
+              <textarea formControlName="nombre" cols="30" rows="10"
+                placeholder="Escribe un nuevo avance..."></textarea>
+              <span class="info-creacion">Creado {{fecha }}  </span>
+
+            </div>
+            <span style="color:red;" *ngIf="campoEsValido('nombre')">Este campo es obligatorio*</span>
+
+          </div>
+
+
+          <button type="submit" class="save-avance">
+            <div>
+              <p> <span class="material-icons">cloud_upload</span>
+                Grabar Avance
+              </p>
+            </div>
+
+          </button>
+
+
+
+          <div class="lista-avances">
+
+            <div class="avance" *ngFor="let avance of avc">
+              <p>{{ avance.nombre }}</p>
+              <span class="info-creacion">Creado {{ avance.fecha|date }}</span>
+            </div>
+
+          </div>
+          
+         <!-- <div class="lista-avances">
+
+            <div class="avance" *ngFor="let avance of avances">
+              <p>{{ avance.comentario }}</p>
+              <span class="info-creacion">Creado {{ avance.fechaCreacion }}</span>
+            </div>
+
+          </div>-->
+
+        </form>
+      </div>
+
+
+    </mat-dialog-content>
+    <!-- 
+      
+        <mat-dialog-actions align="start">
+          <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
+        </mat-dialog-actions> -->
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<!--Menu lateral-->
+<div class="menu card" style="overflow: hidden !important;">
+  <div class="menulateral" style="overflow: hidden !important; " (click)="onButtonGroupClick($event)">
+    <div class="item-menu" [class.item-menu-active]="service.selectedItem==1">
+      <div class="usb-icon-progamas menu-icon" (click)="selectItem(1)" [class.active-icon]="service.selectedItem==1"></div>
+    </div>
+    <div  class="item-menu" [class.item-menu-active]="service.selectedItem==2">
+      <div class="usb-icon-progamas menu-icon" (click)="selectItem(2)" [class.active-icon]="service.selectedItem==2"></div>
+    </div>
+  </div>
+</div>
+<!--End-->

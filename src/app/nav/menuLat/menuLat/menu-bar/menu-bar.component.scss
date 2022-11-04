@@ -1,0 +1,362 @@
+
+
+
+.menu-bar{
+
+    
+    width: 100%;
+    position: relative;
+    z-index: 99;
+}
+
+mat-toolbar{
+    background-color: white ;
+    box-shadow: 2px 1px 10px #9e9e9e;
+
+}
+
+.btn{
+    background-color: white;
+    border-style: none;
+}
+
+.logo{
+
+    margin-left: 5%;
+    width: 80%;
+    vertical-align: middle;
+    cursor: pointer;
+    
+
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.user-info{
+    display: block;
+    width: 20%;
+}
+
+
+#perfil-imagen-small{
+
+    display: inline-block;
+    width: 50px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    transition: all 0.5s;
+}
+
+#perfil-imagen-small:hover{
+    cursor: pointer;
+    border: 1px solid var(--blue) !important;
+}
+
+#perfil-imagen{
+    display: inline-block;
+    width: 60px;
+    height: 55px;
+    border-radius: 50%;
+    margin-right: 10px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    transition: all 0.5s;
+    // background-image: url('../../../assets/images/logo.svg');
+}
+
+#perfil-imagen:hover{
+    cursor: pointer;
+    border: 1px solid var(--blue) !important;
+    
+}
+
+.user-image{
+    width: 60px;
+    height: 55px;
+}
+
+.usuario{
+    margin-left: 2%;
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: medium;
+    margin-right: 15px;
+}
+
+.usuario:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rounded-full{
+    background-color: var(--ligth-gray);
+    cursor: pointer;
+    vertical-align: middle;
+    transition: all 0.5s;
+    margin-right: 2px;
+
+}
+
+.rounded-full:hover{
+  
+  background-color:var(--ligth-blue);
+  color:var(--blue) !important;
+  
+}
+
+// Background negro para las opciones del usuario 
+.user-options{
+    
+    background-color: rgba(0,0,0, 0.4);
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    // -webkit-filter: blur(8px);
+    // filter: blur(8px);
+    backdrop-filter: blur(5px);
+    height: 100vh;
+    position: absolute;
+    z-index: 50;
+    width: 100%;
+    animation: fadeIn 0.5s;
+    transition: all 0.5s;
+}
+
+// caja blanca con el usuario
+.box-user{
+    background-color: white;
+    //max-height: 25%;
+    height: 25%;
+    margin-top: 1%;
+    margin-right: 3%;
+    border-radius: 10px;
+    width: 25%;
+    max-width: 25%;
+    padding: 2vh;
+    position: absolute;
+    z-index: 60;
+
+
+}
+
+.box-user-info{
+    margin-bottom: 3%;
+    display: flex;
+
+}
+
+.box-user-info div{
+    display: flex;
+    flex-direction: column;
+    max-width:80% ;
+    width: 80%;
+    
+}
+
+.box-user-info div span:last-child{
+    color: #bdbdbd;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.box-user-info div span:last-child:hover {
+    cursor:pointer;
+    text-decoration: underline;
+}
+
+
+
+.box-user-options{
+
+    margin-top: 5%;
+    padding: 0 3% 0% 3%;
+
+}
+
+.box-user-options p{
+    
+    padding: 2% 2%;
+    vertical-align: middle;
+
+}
+
+
+
+.box-user-options p:hover{
+    
+    cursor:pointer
+
+}
+
+
+
+.icon-option{
+
+    background-color: var(--ligth-gray);
+    border-radius: 50%;
+    cursor: pointer; 
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    transition: all 0.5s;
+    vertical-align: middle;
+    padding-top: 3px;
+}
+
+.icons {
+    
+    font-size:18px; 
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 3px;
+    float:right; 
+    display: none;
+    transition: all 2s;
+}
+
+.box-user-options p:hover .icon-option{
+
+    background-color:var(--ligth-blue);
+    color:var(--blue) !important;
+    
+}
+
+.box-user-options p:hover .icons{
+
+    display: inline;
+}
+
+.box-user-options p span{
+    margin-left: 3%;
+    font-weight: bold;
+}
+
+.derechos{
+
+    text-align: center;
+    color: #bdbdbd;
+    font-weight: bold;
+}
+
+.derechos:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+// animaciones 
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+
+
+//   DISEÑO RESPONSIVE 
+
+/*
+  1024
+  1280
+  1400
+  >1600
+
+*/
+
+@media ( max-width:900px ){
+
+    .user-info{
+        display: none;
+    }
+    .user-options{
+        display: none;
+    }
+}
+
+@media (min-width: 900px) and 
+       (max-width: 1024px){
+
+    .user-info{
+        width: 28%;
+    }
+
+    .box-user{
+        height: 35%;
+    }
+
+}
+
+@media (min-width: 1024px) and 
+       (max-width: 1280px)
+       {
+
+    .user-info{
+        width: 28%;
+    }
+
+    .box-user{
+        height: 35%;
+        margin-right: 6%
+    }
+
+}
+
+@media ( min-width:1280px ) 
+        and (max-width: 1500px)  
+       {
+       
+        .user-info{
+            width: 25%;
+        }
+
+        .box-user{
+            height: 35%;            
+            margin-right: 7%
+        }
+
+
+}
+
+@media ( min-width:1500px ) 
+        and (max-width: 1600px)  
+       {
+       
+        .user-info{
+            width: 25%;
+        }
+        
+
+        .box-user{
+            height: 36%;
+            margin-right: 10%;
+            width: 24%;
+        }
+
+
+}
+
+@media ( min-width:1600px ) 
+        //and (max-width: 1600px)  
+       {
+       
+        .user-info{
+            width: 25%;
+        }
+        
+
+        .box-user{
+            margin-right: 160px;
+            height: 280px;
+            width: 500px;
+        }
+
+
+}

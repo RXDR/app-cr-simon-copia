@@ -1,0 +1,16 @@
+<div class="variables-title">
+    <span style="flex: 90;">Notificación</span>
+
+    <div class="close-button">
+        <mat-icon aria-label="close" (click)="dialogRef.close(false)">close</mat-icon>
+    </div>
+
+</div>
+<div class="container">
+    {{confirmMessage}}
+</div>
+<div class="opciones">
+    <button  mat-button class="flat-button" color="primary" (click)="dialogRef.close(true)">OK</button>
+    <span class="button-separator"></span>
+    
+</div>

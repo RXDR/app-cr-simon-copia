@@ -1,0 +1,20 @@
+.close-button{
+    display: flex;
+}
+.variables-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.container{
+    padding: 10px;
+}
+
+.opciones{
+    display: flex;
+    button{
+        flex: 1;
+        gap: 10px;
+    }
+}

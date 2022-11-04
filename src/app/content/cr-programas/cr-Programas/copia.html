@@ -1,0 +1,853 @@
+<div class="container  ">
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
+      <div class="card  mx-auto" style=" margin:auto;padding: 5vh;left:0;right:0;z-index:1; margin-top: 2vh; top: -4vh;">
+  
+        <div class="row">
+          <div style="width:100%;">
+            <mat-card-title class="tituformulario">
+              <p-message severity="warn" text="Todos los campos con * son obligatorios" styleClass=" "></p-message>
+              <label class="lg:text-2xl" style="float:right;">Fecha de servicio: <input type="datetime-local"
+                  [readonly]="dateCreacion" [ngClass]="{
+            'is-invalid':f('fechaSer')?.invalid,
+            'is-valid': f('fechaSer')?.valid
+          }" formControlName="fechaSer"> <small *ngIf="valideteField('fechaSer')"> Este campo es necesario
+                </small></label>
+            </mat-card-title>
+          </div>
+        </div>
+        <span class="mx-auto  nuevoTitulo xl:bg-red-50 " id="nuevotitulo"> Datos Básicos </span>
+        <div
+          style="width: 100%; margin:auto;padding: 8vh; top:1vh;left:0;right:0;z-index:1; border:1px solid var(--blue2); ">
+  
+          <div class="row ">
+            <div class="col-10 -ml-12 -mt-4 -top-2" style="display:inline-flex ;"
+              [formGroup]="formulario?.get('programa')" id="programa">
+              <label for="" class="labeltitulo ">*Nombre Programa</label>
+              <input matInput type="text" [readonly]="slect" class="form-control" placeholder=" " [ngClass]="{
+              'is-invalid':f('programa.nombre')?.invalid,
+              'is-valid': f('programa.nombre')?.valid
+            }" formControlName="nombre" style="width:470px ;">
+              <small *ngIf="f('programa.nombre')?.getError('required')"> Este campo es necesario </small>
+            </div>
+  
+          </div>
+  
+          <div class="row">
+            <div class="col left-6" [formGroup]="formulario?.get('programa.facultad')">
+              <label>*Facultad</label><br>
+              <mat-select id="my-select" class="form-control" name="" formControlName="codigo" [ngClass]="{
+              'is-invalid':f('programa.facultad.codigo')?.invalid,
+              'is-valid': f('programa.facultad.codigo')?.valid
+            }" (change)="onChangeFacultad($event.target)">
+                <mat-option [disabled]="readonly"></mat-option>
+                <mat-option *ngFor="let facultad of facult" [value]="facultad.codigo" [disabled]="slect">
+                  {{facultad.nombre}}</mat-option>
+              </mat-select>
+              <small *ngIf="f('programa.facultad.codigo')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <!--end-->
+            <div class="col" [formGroup]="formulario?.get('nivelAcademicoPrg')">
+              <label class="labeltitulo -right-2" style="margin-right: -4px; ">*Nivel Académico &nbsp; </label>
+              <mat-select class="form-control" id="" formControlName="id" [ngClass]="{
+              'is-invalid':f('nivelAcademicoPrg.id')?.invalid,
+              'is-valid': f('nivelAcademicoPrg.id')?.valid
+            }" (change)="onChangeNivelAcademicoPrg($event.target)">
+                <mat-option *ngFor="let niveles of nivelesAcPr" [value]="niveles.id" [disabled]="slect">
+                  {{niveles.nombre}}
+                </mat-option>
+              </mat-select>
+              <small *ngIf="valideteField('nivelAcademicoPrg.id')"> Este campo es necesario </small>
+  
+            </div>
+            <!--end-->
+            <div class="col" [formGroup]="formulario?.get('programa.nivelAcademico')">
+              <label>*Formación</label><br>
+              <mat-select class="form-control" id="" formControlName="id" [ngClass]="{
+              'is-invalid':f('programa.nivelAcademico.id')?.invalid,
+              'is-valid': f('programa.nivelAcademico.id')?.valid
+            }" (change)="onChangeNivelAcademico($event.target)">
+                <mat-option [disabled]="readonly"> </mat-option>
+                <mat-option *ngFor="let nivelAc of nivelesAcade" [value]="nivelAc.id" [disabled]="slect">
+                  {{nivelAc.nombre}} </mat-option>
+              </mat-select>
+              <small *ngIf="f('programa.nivelAcademico.id')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <!--end-->
+  
+  
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:-1vh; margin-left:1vh;">
+        <div class="col flex">
+          <mat-card style="width:99%; border-radius: 13px; display: flex;">
+            <mat-card-title style="display:flex;">
+              Seleccione la sede a la cual pertenece el programa: &nbsp;
+              <input type="checkbox" id="cbox1" class="largerCheckbox" value="first_checkbox" size="100px" [checked]="show1"
+              (change)="show1 = !show1">
+              <label class="labeltitulo mr-4 "> Barranquilla</label>
+              <input type="checkbox" id="cbox2" class="largerCheckbox" value="first_checkbox" size="100px"
+              [checked]="show2"
+              (change)="show2 = !show2"
+              >
+              <label class="labeltitulo"> Cucuta</label><br>
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+      <!--end-->
+  
+      <div class="card  mx-auto" style="top: 2vh; padding: 5vh; " *ngIf="show1">
+  
+        <span class="mx-auto  nuevoTitulo " id="nuevosubtitulo"> Detalle del programa académico (Barranquilla) </span>
+        <div class="py-4"
+          style="width: 100%; margin:auto;padding: 3vh; top:1vh;left:0;right:0;z-index:1; border:1px solid var(--blue2); ">
+          <div class="row  ">
+            <div class="col-2"></div>
+            <div class="col-5  ">
+              <label class="labeltitulo">*Snies <input [readonly]="readonly" type="text" class="form-control1"
+                  placeholder="  " [ngClass]="{
+                  'is-invalid':f('snies')?.invalid,
+                  'is-valid': f('snies')?.valid
+                  }" formControlName="snies"></label>
+              <small *ngIf="f('snies')?.getError('required')"> Este campo es necesario </small>
+            </div>
+  
+            <div class="col-3 -ml-16">
+              <label class="labeltitulo">*Registro Calificado Único
+                <mat-select [disabled]="readonly" type="number" class="form-control1" placeholder="  " [ngClass]="{
+              'is-invalid':f('registroCalificadoUnico')?.invalid,
+              'is-valid': f('registroCalificadoUnico')?.valid
+            }" formControlName="registroCalificadoUnico" style="width:80px;">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </label>
+              <small *ngIf="f('registroCalificadoUnico')?.getError('required')"> Este campo es necesario </small>
+  
+  
+            </div>
+  
+          </div>
+          <!--end-->
+          <div class="row  ">
+  
+            <div class="col-5  ml-16 mr-20">
+              <label class="labeltitulo">*Título que otorga(Femenino) <input [readonly]="slect" type="text"
+                  class="form-control" [ngClass]="{
+                  'is-invalid':f('tituloF')?.invalid,
+                  'is-valid': f('tituloF')?.valid
+                }" placeholder=" " formControlName="tituloF"></label>
+              <small *ngIf="f('tituloF')?.getError('required')"> Este campo es necesario </small>
+            </div>
+  
+            <div class="col">
+              <label class="labeltitulo">*Título que Otorga(Masculino)
+                <input [readonly]="slect" type="text" class="form-control" [ngClass]="{
+              'is-invalid':f('tituloM')?.invalid,
+              'is-valid': f('tituloM')?.valid
+            }" placeholder="  " formControlName="tituloM"></label>
+              <small *ngIf="f('tituloM')?.getError('required')"> Este campo es necesario </small>
+            </div>
+  
+          </div>
+  
+          <!--end-->
+          <div class="row">
+            <div class="col-1">
+  
+            </div>
+            <div class="col">
+              <label class="labeltitulo" style="display:flex;">
+                Modalidad y tipo de programa
+              </label>
+              <table class="table table-hover">
+                <thead>
+                  <tr><span class="btn btn-info mb-1" (click)="openModal">+Agregar</span></tr>
+                  <tr style="border:1px solid ;">
+                    <th style="border:1px solid ;">Tipo</th>
+                    <th style="border:1px solid ;">Modalidad</th>
+                  </tr>
+  
+                </thead>
+                <tbody>
+                  <tr style="border:1px solid ;">
+                    <td>dato</td>
+                    <td>dato</td>
+                  </tr>
+                </tbody>
+  
+              </table>
+            </div>
+            <div class="col">
+  
+            </div>
+            <div class="col">
+  
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+  
+            <div class="col ml-7">
+              <label class="labeltitulo">Duración estimada del programa</label>
+              <input [readOnly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('duracion')?.invalid,
+                'is-valid': f('duracion')?.valid
+              }" formControlName="duracion">
+  
+  
+              <small *ngIf="f('duracion')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col">
+              <mat-select style="float:left;" type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('periodAdmision')?.invalid,
+                'is-valid': f('periodAdmision')?.valid
+              }" formControlName="periodAdmision">
+                <mat-option [disabled]="readonly" *ngFor="let admision of duracionesProgramas" [value]="admision.id"
+                  (change)="onChangeAdmision($event.target)">{{admision.nombre}}</mat-option>
+  
+  
+              </mat-select>
+              <small *ngIf="f('periodAdmision')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col"></div>
+          </div>
+          <div class="row">
+  
+            <div class="col ml-7">
+              <label class="labeltitulo">Periodicidad de la Admisión al Programa</label>
+              <mat-select type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('periodAdmision')?.invalid,
+                'is-valid': f('periodAdmision')?.valid
+              }" formControlName="periodAdmision" style="width:250px ;">
+                <mat-option [disabled]="readonly" *ngFor="let admision of admisionPrg" [value]="admision.id"
+                  (change)="onChangeAdmision($event.target)">{{admision.nombre}}</mat-option>
+  
+  
+              </mat-select>
+              <small *ngIf="f('periodAdmision')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col">
+  
+            </div>
+            <div class="col">
+  
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-1 mr-8"></div>
+            <div class="col">
+              <label for="" class="labeltitulo">Campo Amplio</label>
+              <mat-select class="form-control">
+                <mat-option>1</mat-option>
+              </mat-select>
+            </div>
+            <div class="col"><label class="labeltitulo">Campo Especifico</label>
+              <mat-select class="form-control">
+                <mat-option>1</mat-option>
+              </mat-select>
+            </div>
+            <div class="col"><label class="labeltitulo">Campo Detallado</label>
+              <mat-select class="form-control">
+                <mat-option>1</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="row">
+  
+            <div class="col -ml-1"><label for="" class="labeltitulo">Porcentaje de Inclusión Tecnológica</label>
+              <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('porcInclTecno')?.invalid,
+                'is-valid': f('porcInclTecno')?.valid
+              }" formControlName="porcInclTecno" placeholder="%">
+              <small *ngIf="f('porcInclTecno')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-3"></div>
+          </div>
+          <div class="row">
+  
+            <div class="col left-10"><label for="" class="labeltitulo">Número de Estudiantes en el Primer periodo</label>
+              <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('numeroDeEstudientesEnPrimerPeriodo')?.invalid,
+                'is-valid': f('numeroDeEstudientesEnPrimerPeriodo')?.valid
+              }" formControlName="numeroDeEstudientesEnPrimerPeriodo">
+              <small *ngIf="f('numeroDeEstudientesEnPrimerPeriodo')?.getError('required')"> Este campo es necesario
+              </small>
+            </div>
+            <div class="col ml-20 left-14 "><label class="labeltitulo">Cupo por cohorte</label>
+              <input [readonly]="readonly" type="number" class="form-control" formControlName="cupoCohorte" [ngClass]="{
+                'is-invalid':f('cupoCohorte')?.invalid,
+                'is-valid': f('cupoCohorte')?.valid
+              }">
+              <small *ngIf="f('cupoCohorte')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col left-4"><label class="labeltitulo">Valor de Matricula</label>
+              <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('valorMatricula')?.invalid,
+                'is-valid': f('valorMatricula')?.valid
+              }" formControlName="valorMatricula">
+              <small *ngIf="f('valorMatricula')?.getError('required')"> Este campo es necesario </small>
+            </div>
+          </div>
+          <!--end-->
+          <div class="row">
+           
+            <div class="col left-9"><label class="labeltitulo">*Lugar Desarrollo Vigente IES</label>
+              <select id="my-select" class="form-control" [ngClass]="{
+                'is-invalid':f('ubicacionOLugarDesarrolloVigenteIes.id')?.invalid,
+                'is-valid': f('ubicacionOLugarDesarrolloVigenteIes.id')?.valid
+              }" formControlName="id" (change)="onChangeUbicacionLugar($event.target)">
+                <option [disabled]="readonly"></option>
+                <option *ngFor="let ciudad of ciudades" [value]="ciudad.id" [disabled]="slect"> {{ciudad.nombre}}
+                </option>
+              </select>
+              <small *ngIf="f('ubicacionOLugarDesarrolloVigenteIes.id')?.getError('required')"> Este campo es necesario
+              </small>
+            </div>
+            <div class="col-4 left-12 ">
+              <label class="labeltitulo">Vigencia Lugar Desarrollo</label>
+              <input [readonly]="readonly" type="number" class="form-control" [ngClass]="{
+                  'is-invalid':f('vigLugarDes')?.invalid,
+                  'is-valid': f('vigLugarDes')?.valid
+                }" placeholder="  " formControlName="vigLugarDes">
+              <small *ngIf="f('vigLugarDes')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col-4 left-24 ">
+              <label for="" class="labeltitulo">Código RU</label>
+              <input type="number" [readonly]="readonly" class="form-control" placeholder="  " [ngClass]="{
+                  'is-invalid':f('codigoRu')?.invalid,
+                  'is-valid': f('codigoRu')?.valid
+                }" formControlName="codigoRu">
+              <small *ngIf="f('codigoRu')?.getError('required')"> Este campo es necesario </small>
+  
+            </div>
+          </div>
+          <!--end-->
+  
+          <!--end-->
+          <div class="row">
+  
+            <div class="col left-14">
+              <label for="" class="labeltitulo">Norma interna de creación</label>
+              <input [readonly]="readonly" type="text" class="form-control" [ngClass]="{
+                  'is-invalid':f('normaIntCreacion')?.invalid,
+                  'is-valid': f('normaIntCreacion')?.valid
+                }" placeholder="  " formControlName="normaIntCreacion">
+              <small *ngIf="f('normaIntCreacion')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col ml-20 left-8 ">
+              <label class="labeltitulo">Numero de la norma</label>
+              <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+                  'is-invalid':f('nnorma')?.invalid,
+                  'is-valid': f('nnorma')?.valid
+                }" formControlName="nnorma">
+              <small *ngIf="f('nnorma')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col -left-16">
+              <label class="labeltitulo">Instancia que expide la norma</label>
+              <input [readonly]="readonly" type="text" class="form-control" placeholder="  " [ngClass]="{
+                  'is-invalid':f('intExpNorma')?.invalid,
+                  'is-valid': f('intExpNorma')?.valid
+                }" formControlName="intExpNorma">
+              <small *ngIf="f('intExpNorma')?.getError('required')"> Este campo es necesario </small>
+            </div>
+          </div>
+          <!--end-->
+          <!--end-->
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col left-12"><label for="" class="labeltitulo">Resolución</label>
+              <input type="text" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('resolucion')?.invalid,
+                'is-valid': f('resolucion')?.valid
+              }" formControlName="resolucion">
+              <small *ngIf="f('resolucion')?.getError('required')"> Este campo es necesario </small>
+            </div>
+  
+            <div class="col -left-5  ">
+  
+              <label class="labeltitulo">Numero de la resolución</label>
+              <input type="number" class="form-control" placeholder="  " [ngClass]="{
+                  'is-invalid':f('ndeRes')?.invalid,
+                  'is-valid': f('ndeRes')?.valid
+                }" formControlName="ndeRes">
+              <small *ngIf="f('ndeRes')?.getError('required')"> Este campo es necesario </small>
+  
+            </div>
+            <div class="col -left-7">
+              <label class="labeltitulo">Fecha de la resolución</label>
+              <input type="datetime-local" class="form-control" placeholder="  " [ngClass]="{
+                'is-invalid':f('ndeRes')?.invalid,
+                'is-valid': f('ndeRes')?.valid
+              }" formControlName="fechaRes">
+              <small *ngIf="f('fechaRes')?.getError('required')"> Este campo es necesario </small>
+            </div>
+          </div>
+  
+          <!--end-->
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col left-10">
+              <label for="">Obligatorios</label>
+              <input [readonly]="readonly" type="number" (keyup)=" onChangeObligatorio($event.target)"
+                class="form-control" placeholder="No. 0" formControlName="ncreditosObligatorios" [ngClass]="{
+                        'is-invalid':f('ncreditosObligatorios')?.invalid,
+                        'is-valid': f('ncreditosObligatorios')?.valid
+                      }">
+              <small *ngIf="f('ncreditosObligatorios')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col ml-20 left-9 "><label for="">Electivos</label>
+              <input [readonly]="readonly" type="number" (keyup)="onChangeElectivo($event.target)"  class="form-control rounded-full"
+               placeholder="No. 0" formControlName="ncreditosElectivos" [ngClass]="{
+               'is-invalid':f('ncreditosElectivos')?.invalid,
+                'is-valid': f('ncreditosElectivos')?.valid
+                      }">
+                    <small *ngIf="f('ncreditosElectivos')?.getError('required')"> Este campo es necesario </small>
+            </div>
+            <div class="col -left-4"><label class="labeltitulo">Total de créditos</label>
+              <input [readonly]="readonly" type="number"  class="form-control" placeholder=" " [ngClass]="{
+                'is-invalid':f('ntotalCreditos')?.invalid,
+                'is-valid': f('ntotalCreditos')?.valid
+              }" formControlName="ntotalCreditos"  >
+              
+              <small *ngIf="f('ntotalCreditos')?.getError('required')"> Este campo es necesario </small>
+            </div>
+          </div>
+          <!--end-->
+          <br>
+          <hr>
+          <!--aqui-->
+          <div class="row">
+            <div class="-top-8"
+            style="width:90%; margin:auto;padding: 5vh;left:0;right:0;z-index:1; 
+            position: relative; border-color: rgb(11, 111, 226); color: gray; border-radius: 0%;"
+            >
+              <p>Argumente la vigencia de la correspondencia de la denominación del programa con el título a otorgar, el nivel
+                de formación, los contenidos curriculares y el perfil del egresado del programa académico.​
+                En caso de que modifique la denominación del programa académico, argumentar la correspondencia entre la nueva
+                denominación, el título a otorgar, los contenidos curriculares y el perfil del egresado ​</p>
+      
+              <p>​ Cuando la institución solicite la renovación del registro calificado con modificación en la denominación del programa 
+                académico y el título a otorgar, deberá anexar, soportado en el sistema interno de aseguramiento de la calidad y en uno o 
+                varios informes de autoevaluación:</p>
+              <p style="font-weight:bold;">La justificación de la modificación.</p>
+              <ul style="list-style:square">
+                <li>El análisis de la correspondencia de la denominación del programa con el título a otorgar, el nivel
+                  formación, los contenidos curriculares del programa, los resultados de aprendizaje y el perfil del egresado.
+                </li>
+                <li> Cuando se trate de una nueva denominación, no registrada o activa en SNIES, se debe presentar un análisis
+                  en el que se justifique la nueva denominación en coherencia con el nivel de desarrollo y la(s)
+                  modalidad(es), de conformidad con lo dispuesto en el artículo 6 de la Resolución 21795 de 2020 y el artículo
+                  2.5.3.2.3.2.2 del Decreto 1075 de 2015, modificado por el Decreto 1330 de 2019.</li>
+                  <li><p>Acto interno expedido por la autoridad competente en el que se autoriza la modificación.</p></li>
+                  <li> <p>Régimen de transición, cuando aplique, a través del cual se garanticen los derechos de los estudiantes
+                     ante eventualidades académicas, tales como repitencia,suspensiones y reintegros, entre otros, en coherencia 
+                     con lo que disponga el reglamento estudiantil.</p>
+                  </li>
+                  <li><p>Para programas académicos cuya titulación determine, por requisito legal, la exigencia de tarjeta o licencia profesional,
+                     presentar un análisis sobre la incidencia de la respectiva normatividad en el desempeño profesional
+                     del egresado conforme a la denominación y titulación propuesta para el programa.</p></li>
+              </ul>
+      
+      
+            </div>
+            <div  class="row " style="width:100%;margin-top: -5vh;">
+              <div class="col p-10">
+                <textarea [readonly]="textarea" name="" class="form-control " formControlName="textareaObserv" style="width:100%; height:160px;"></textarea>
+              </div>
+   
+            </div>
+            <div class="row">
+              <div class="col px-10 -top-14">
+               <label for="boton-anexos">
+                <span class="btn btn-primary">Cargar anexos</span>
+               </label> 
+                <input type="file" id="boton-anexos" class="mx-auto text-center text-blue-400 sm:text-md"
+                  placeholder="Cargue de  anexos" style="display:none;">
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
+      </div>
+  <!--cucuta-->
+  <div class="row mx-auto" *ngIf="show2"><span class="btn btn-info">Trasladar datos a sede</span></div>
+  <div class="card  mx-auto" style="top: 10vh; padding: 5vh; " *ngIf="show2">
+  
+    <span class="mx-auto  nuevoTitulo " id="nuevosubtitulo"> Detalle del programa académico (Cúcuta) </span>
+    <div class="py-4"
+      style="width: 100%; margin:auto;padding: 3vh; top:1vh;left:0;right:0;z-index:1; border:1px solid var(--blue2); ">
+      <div class="row  ">
+        <div class="col-2"></div>
+        <div class="col-5  ">
+          <label class="labeltitulo">*Snies <input [readonly]="readonly" type="text" class="form-control1"
+              placeholder="  " [ngClass]="{
+              'is-invalid':f('snies')?.invalid,
+              'is-valid': f('snies')?.valid
+              }" formControlName="snies"></label>
+          <small *ngIf="f('snies')?.getError('required')"> Este campo es necesario </small>
+        </div>
+  
+        <div class="col-3 -ml-16">
+          <label class="labeltitulo">*Registro Calificado Único
+            <mat-select [disabled]="readonly" type="number" class="form-control1" placeholder="  " [ngClass]="{
+          'is-invalid':f('registroCalificadoUnico')?.invalid,
+          'is-valid': f('registroCalificadoUnico')?.valid
+        }" formControlName="registroCalificadoUnico" style="width:80px;">
+              <mat-option value="SI">SI</mat-option>
+              <mat-option value="NO">NO</mat-option>
+            </mat-select>
+          </label>
+          <small *ngIf="f('registroCalificadoUnico')?.getError('required')"> Este campo es necesario </small>
+  
+  
+        </div>
+  
+      </div>
+      <!--end-->
+      <div class="row  ">
+  
+        <div class="col-5  ml-16 mr-20">
+          <label class="labeltitulo">*Título que otorga(Femenino) <input [readonly]="slect" type="text"
+              class="form-control" [ngClass]="{
+              'is-invalid':f('tituloF')?.invalid,
+              'is-valid': f('tituloF')?.valid
+            }" placeholder=" " formControlName="tituloF"></label>
+          <small *ngIf="f('tituloF')?.getError('required')"> Este campo es necesario </small>
+        </div>
+  
+        <div class="col">
+          <label class="labeltitulo">*Título que Otorga(Masculino)
+            <input [readonly]="slect" type="text" class="form-control" [ngClass]="{
+          'is-invalid':f('tituloM')?.invalid,
+          'is-valid': f('tituloM')?.valid
+        }" placeholder="  " formControlName="tituloM"></label>
+          <small *ngIf="f('tituloM')?.getError('required')"> Este campo es necesario </small>
+        </div>
+  
+      </div>
+  
+      <!--end-->
+      <div class="row">
+        <div class="col-1">
+  
+        </div>
+        <div class="col">
+          <label class="labeltitulo" style="display:flex;">
+            Modalidad y tipo de programa
+          </label>
+          <table class="table table-hover">
+            <thead>
+              <tr><button class="btn btn-info mb-1">+Agregar</button></tr>
+              <tr style="border:1px solid ;">
+                <th style="border:1px solid ;">Tipo</th>
+                <th style="border:1px solid ;">Modalidad</th>
+              </tr>
+  
+            </thead>
+            <tbody>
+              <tr style="border:1px solid ;">
+                <td>dato</td>
+                <td>dato</td>
+              </tr>
+            </tbody>
+  
+          </table>
+        </div>
+        <div class="col">
+  
+        </div>
+        <div class="col">
+  
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+  
+        <div class="col ml-7">
+          <label class="labeltitulo">Duración estimada del programa</label>
+          <input [readOnly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('duracion')?.invalid,
+            'is-valid': f('duracion')?.valid
+          }" formControlName="duracion">
+  
+  
+          <small *ngIf="f('duracion')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col">
+          <mat-select style="float:left;" type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('periodAdmision')?.invalid,
+            'is-valid': f('periodAdmision')?.valid
+          }" formControlName="periodAdmision">
+            <mat-option [disabled]="readonly" *ngFor="let admision of duracionesProgramas" [value]="admision.id"
+              (change)="onChangeAdmision($event.target)">{{admision.nombre}}</mat-option>
+  
+  
+          </mat-select>
+          <small *ngIf="f('periodAdmision')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col"></div>
+      </div>
+      <div class="row">
+  
+        <div class="col ml-7">
+          <label class="labeltitulo">Periodicidad de la Admisión al Programa</label>
+          <mat-select type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('periodAdmision')?.invalid,
+            'is-valid': f('periodAdmision')?.valid
+          }" formControlName="periodAdmision" style="width:250px ;">
+            <mat-option [disabled]="readonly" *ngFor="let admision of admisionPrg" [value]="admision.id"
+              (change)="onChangeAdmision($event.target)">{{admision.nombre}}</mat-option>
+  
+  
+          </mat-select>
+          <small *ngIf="f('periodAdmision')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col">
+  
+        </div>
+        <div class="col">
+  
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 mr-8"></div>
+        <div class="col">
+          <label for="" class="labeltitulo">Campo Amplio</label>
+          <mat-select class="form-control">
+            <mat-option>1</mat-option>
+          </mat-select>
+        </div>
+        <div class="col"><label class="labeltitulo">Campo Especifico</label>
+          <mat-select class="form-control">
+            <mat-option>1</mat-option>
+          </mat-select>
+        </div>
+        <div class="col"><label class="labeltitulo">Campo Detallado</label>
+          <mat-select class="form-control">
+            <mat-option>1</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="row">
+  
+        <div class="col -ml-1"><label for="" class="labeltitulo">Porcentaje de Inclusión Tecnológica</label>
+          <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('porcInclTecno')?.invalid,
+            'is-valid': f('porcInclTecno')?.valid
+          }" formControlName="porcInclTecno" placeholder="%">
+          <small *ngIf="f('porcInclTecno')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-3"></div>
+      </div>
+      <div class="row">
+  
+        <div class="col left-10"><label for="" class="labeltitulo">Número de Estudiantes en el Primer periodo</label>
+          <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('numeroDeEstudientesEnPrimerPeriodo')?.invalid,
+            'is-valid': f('numeroDeEstudientesEnPrimerPeriodo')?.valid
+          }" formControlName="numeroDeEstudientesEnPrimerPeriodo">
+          <small *ngIf="f('numeroDeEstudientesEnPrimerPeriodo')?.getError('required')"> Este campo es necesario
+          </small>
+        </div>
+        <div class="col ml-20 left-14 "><label class="labeltitulo">Cupo por cohorte</label>
+          <input [readonly]="readonly" type="number" class="form-control" formControlName="cupoCohorte" [ngClass]="{
+            'is-invalid':f('cupoCohorte')?.invalid,
+            'is-valid': f('cupoCohorte')?.valid
+          }">
+          <small *ngIf="f('cupoCohorte')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col left-4"><label class="labeltitulo">Valor de Matricula</label>
+          <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('valorMatricula')?.invalid,
+            'is-valid': f('valorMatricula')?.valid
+          }" formControlName="valorMatricula">
+          <small *ngIf="f('valorMatricula')?.getError('required')"> Este campo es necesario </small>
+        </div>
+      </div>
+      <!--end-->
+      <div class="row">
+       
+        <div class="col left-9"><label class="labeltitulo">*Lugar Desarrollo Vigente IES</label>
+          <select id="my-select" class="form-control" [ngClass]="{
+            'is-invalid':f('ubicacionOLugarDesarrolloVigenteIes.id')?.invalid,
+            'is-valid': f('ubicacionOLugarDesarrolloVigenteIes.id')?.valid
+          }" formControlName="id" (change)="onChangeUbicacionLugar($event.target)">
+            <option [disabled]="readonly"></option>
+            <option *ngFor="let ciudad of ciudades" [value]="ciudad.id" [disabled]="slect"> {{ciudad.nombre}}
+            </option>
+          </select>
+          <small *ngIf="f('ubicacionOLugarDesarrolloVigenteIes.id')?.getError('required')"> Este campo es necesario
+          </small>
+        </div>
+        <div class="col-4 left-12 ">
+          <label class="labeltitulo">Vigencia Lugar Desarrollo</label>
+          <input [readonly]="readonly" type="number" class="form-control" [ngClass]="{
+              'is-invalid':f('vigLugarDes')?.invalid,
+              'is-valid': f('vigLugarDes')?.valid
+            }" placeholder="  " formControlName="vigLugarDes">
+          <small *ngIf="f('vigLugarDes')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col-4 left-24 ">
+          <label for="" class="labeltitulo">Código RU</label>
+          <input type="number" [readonly]="readonly" class="form-control" placeholder="  " [ngClass]="{
+              'is-invalid':f('codigoRu')?.invalid,
+              'is-valid': f('codigoRu')?.valid
+            }" formControlName="codigoRu">
+          <small *ngIf="f('codigoRu')?.getError('required')"> Este campo es necesario </small>
+  
+        </div>
+      </div>
+      <!--end-->
+  
+      <!--end-->
+      <div class="row">
+  
+        <div class="col left-14">
+          <label for="" class="labeltitulo">Norma interna de creación</label>
+          <input [readonly]="readonly" type="text" class="form-control" [ngClass]="{
+              'is-invalid':f('normaIntCreacion')?.invalid,
+              'is-valid': f('normaIntCreacion')?.valid
+            }" placeholder="  " formControlName="normaIntCreacion">
+          <small *ngIf="f('normaIntCreacion')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col ml-20 left-8 ">
+          <label class="labeltitulo">Numero de la norma</label>
+          <input [readonly]="readonly" type="number" class="form-control" placeholder="  " [ngClass]="{
+              'is-invalid':f('nnorma')?.invalid,
+              'is-valid': f('nnorma')?.valid
+            }" formControlName="nnorma">
+          <small *ngIf="f('nnorma')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col -left-16">
+          <label class="labeltitulo">Instancia que expide la norma</label>
+          <input [readonly]="readonly" type="text" class="form-control" placeholder="  " [ngClass]="{
+              'is-invalid':f('intExpNorma')?.invalid,
+              'is-valid': f('intExpNorma')?.valid
+            }" formControlName="intExpNorma">
+          <small *ngIf="f('intExpNorma')?.getError('required')"> Este campo es necesario </small>
+        </div>
+      </div>
+      <!--end-->
+      <!--end-->
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col left-12"><label for="" class="labeltitulo">Resolución</label>
+          <input type="text" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('resolucion')?.invalid,
+            'is-valid': f('resolucion')?.valid
+          }" formControlName="resolucion">
+          <small *ngIf="f('resolucion')?.getError('required')"> Este campo es necesario </small>
+        </div>
+  
+        <div class="col -left-5  ">
+  
+          <label class="labeltitulo">Numero de la resolución</label>
+          <input type="number" class="form-control" placeholder="  " [ngClass]="{
+              'is-invalid':f('ndeRes')?.invalid,
+              'is-valid': f('ndeRes')?.valid
+            }" formControlName="ndeRes">
+          <small *ngIf="f('ndeRes')?.getError('required')"> Este campo es necesario </small>
+  
+        </div>
+        <div class="col -left-7">
+          <label class="labeltitulo">Fecha de la resolución</label>
+          <input type="datetime-local" class="form-control" placeholder="  " [ngClass]="{
+            'is-invalid':f('ndeRes')?.invalid,
+            'is-valid': f('ndeRes')?.valid
+          }" formControlName="fechaRes">
+          <small *ngIf="f('fechaRes')?.getError('required')"> Este campo es necesario </small>
+        </div>
+      </div>
+  
+      <!--end-->
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col left-10">
+          <label for="">Obligatorios</label>
+          <input [readonly]="readonly" type="number" (keyup)=" onChangeObligatorio($event.target)"
+            class="form-control" placeholder="No. 0" formControlName="ncreditosObligatorios" [ngClass]="{
+                    'is-invalid':f('ncreditosObligatorios')?.invalid,
+                    'is-valid': f('ncreditosObligatorios')?.valid
+                  }">
+          <small *ngIf="f('ncreditosObligatorios')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col ml-20 left-9 "><label for="">Electivos</label>
+          <input [readonly]="readonly" type="number" (keyup)="onChangeElectivo($event.target)"  class="form-control rounded-full"
+           placeholder="No. 0" formControlName="ncreditosElectivos" [ngClass]="{
+           'is-invalid':f('ncreditosElectivos')?.invalid,
+            'is-valid': f('ncreditosElectivos')?.valid
+                  }">
+                <small *ngIf="f('ncreditosElectivos')?.getError('required')"> Este campo es necesario </small>
+        </div>
+        <div class="col -left-4"><label class="labeltitulo">Total de créditos</label>
+          <input [readonly]="readonly" type="number"  class="form-control" placeholder=" " [ngClass]="{
+            'is-invalid':f('ntotalCreditos')?.invalid,
+            'is-valid': f('ntotalCreditos')?.valid
+          }" formControlName="ntotalCreditos"  >
+          
+          <small *ngIf="f('ntotalCreditos')?.getError('required')"> Este campo es necesario </small>
+        </div>
+      </div>
+      <!--end-->
+      <div class="row">
+        <div class="-top-8"
+        style="width:90%; margin:auto;padding: 5vh;left:0;right:0;z-index:1; 
+        position: relative; border-color: rgb(11, 111, 226); color: gray; border-radius: 0%;"
+        >
+          <p>Argumente la vigencia de la correspondencia de la denominación del programa con el título a otorgar, el nivel
+            de formación, los contenidos curriculares y el perfil del egresado del programa académico.​
+            En caso de que modifique la denominación del programa académico, argumentar la correspondencia entre la nueva
+            denominación, el título a otorgar, los contenidos curriculares y el perfil del egresado ​</p>
+  
+          <p>​ Cuando la institución solicite la renovación del registro calificado con modificación en la denominación del programa 
+            académico y el título a otorgar, deberá anexar, soportado en el sistema interno de aseguramiento de la calidad y en uno o 
+            varios informes de autoevaluación:</p>
+          <p style="font-weight:bold;">La justificación de la modificación.</p>
+          <ul style="list-style:square">
+            <li>El análisis de la correspondencia de la denominación del programa con el título a otorgar, el nivel
+              formación, los contenidos curriculares del programa, los resultados de aprendizaje y el perfil del egresado.
+            </li>
+            <li> Cuando se trate de una nueva denominación, no registrada o activa en SNIES, se debe presentar un análisis
+              en el que se justifique la nueva denominación en coherencia con el nivel de desarrollo y la(s)
+              modalidad(es), de conformidad con lo dispuesto en el artículo 6 de la Resolución 21795 de 2020 y el artículo
+              2.5.3.2.3.2.2 del Decreto 1075 de 2015, modificado por el Decreto 1330 de 2019.</li>
+              <li><p>Acto interno expedido por la autoridad competente en el que se autoriza la modificación.</p></li>
+              <li> <p>Régimen de transición, cuando aplique, a través del cual se garanticen los derechos de los estudiantes
+                 ante eventualidades académicas, tales como repitencia,suspensiones y reintegros, entre otros, en coherencia 
+                 con lo que disponga el reglamento estudiantil.</p>
+              </li>
+              <li><p>Para programas académicos cuya titulación determine, por requisito legal, la exigencia de tarjeta o licencia profesional,
+                 presentar un análisis sobre la incidencia de la respectiva normatividad en el desempeño profesional
+                 del egresado conforme a la denominación y titulación propuesta para el programa.</p></li>
+          </ul>
+  
+  
+        </div>
+        <div  class="row " style="width:100%;margin-top: -5vh;">
+          <div class="col p-10">
+            <textarea [readonly]="textarea" name="" class="form-control " formControlName="textareaObserv" style="width:100%; height:160px;"></textarea>
+          </div>
+  
+        </div>
+        <div class="row">
+          <div class="col px-10 -top-14">
+           <label for="boton-anexos">
+            <span class="btn btn-primary">Cargar anexos</span>
+           </label> 
+            <input type="file" id="boton-anexos" class="mx-auto text-center text-blue-400 sm:text-md"
+              placeholder="Cargue de  anexos" style="display:none;">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+    </form>
+  
+  
+  </div>

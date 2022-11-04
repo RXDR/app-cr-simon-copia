@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+
+
+$my-primary: mat.define-palette(mat.$blue-palette, A400);
+$my-accent: mat.define-palette(mat.$amber-palette, 50);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ )
+));
+
+@include mat.all-component-themes($my-theme);
+.mat-drawer-inner-container{
+  overflow: hidden !important;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
+  background-color: #161718;
+}
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #bdbdbd;
+}
+
+.mat-button-wrapper{
+  padding:inherit;
+}
+
+.mat-option-text{
+  text-transform: uppercase !important;
+}
+.mat-select{
+width: 100px;
+}

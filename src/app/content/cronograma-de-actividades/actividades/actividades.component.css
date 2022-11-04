@@ -1,0 +1,345 @@
+
+.icons-back{
+    padding: 0;
+    margin-left: -5vh;
+    margin-top: -5vh;
+}
+hr{
+    
+    border-color: #E5E6EB !important;    
+    border-style: solid;
+    
+}
+
+
+.rotated{
+    transform: rotate(45deg);
+}
+
+.contenedor{
+    padding: 50px 0 50px 50px;
+    padding-top: 50px;
+    padding-left: 50;   
+    
+    
+}
+
+mat-dialog-content{
+    margin-bottom: 10px;
+}
+
+
+/* estilos para el header del modal */
+
+.title{
+    display: flex;
+    margin-left: -14px;
+}
+
+
+
+
+.material-icons{
+    color: #9e9e9e ;
+    font-size: 17px;
+    margin-right: 1%;
+    vertical-align: middle;
+
+}
+
+
+.info{
+    color: #9e9e9e !important;
+    font-size: 14px;
+    margin-right: 2%;
+    vertical-align: middle;
+    
+}
+
+.cuerpo{
+
+    margin-top: 10px;
+}
+
+.form{
+    padding: 10px 0 10px 0;
+    
+}
+
+
+
+.label label{
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle;
+}
+
+.label input{
+    width: 60%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border: none;
+    outline: none;
+    border-radius: 1px;
+    color: #60646d;
+    
+}
+
+.label input::placeholder{
+    color: #b4b4b4;
+}
+
+.label input:focus{
+    background-color: #F2F3F5;
+    
+}
+
+
+.label input:hover{
+    background-color: #F2F3F5;
+    cursor: pointer;
+}
+
+
+/* Creación de un avance */
+
+.div-avances{
+    
+    margin-bottom: 20px;
+    
+}
+
+.nuevo-avance{
+    border: solid;
+    border-left: none;
+    border-right: none;
+    border-width: 1px;
+    border-color: #E5E6EB;
+    display: flex;
+    margin-bottom: 20px;
+    width: 100%;
+    
+}
+
+.nuevo-avance div:first-child{
+    border-bottom: solid;
+    color: #60646d !important;
+    display: inline;
+    margin-right: 60%;
+    
+    width: 20%;
+}
+
+.nuevo-avance div{
+    padding-top: 15px;
+    padding-bottom: -10px;
+}
+
+.nuevo-avance div:last-child{
+    display: inline-block;
+    width: 20%;
+}
+
+.nuevo-avance div:last-child input{
+    outline: none;
+    border: none;
+    color: #60646d;
+}
+
+
+.nuevo-avance div:last-child input::placeholder{
+    color: #b4b4b4;
+}
+
+
+
+.crear-avance textarea{
+    color: #60646d;
+    border: none;
+    font-family: Roboto;
+    height: 45px;
+    padding: 10px;
+    resize: none;
+    width: 97%;
+    outline: none;
+
+}
+
+
+.crear-avance textarea::placeholder{
+    color: #b4b4b4;
+    font-family: Roboto;
+}
+
+.info-creacion{
+    color: #b4b4b4;
+    margin-left: 80%;
+    font-family: Roboto;
+    font-size: 13px;
+}
+
+
+/* Grabar un avance */
+
+.save-avance{
+    border: solid;
+    border-left: none;
+    border-right: none;
+    border-width: 1px;
+    border-color: #E5E6EB;
+    background-color: white;
+    display: flex;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-top: 35px;
+    width: 100%;
+
+}
+
+
+.save-avance div{
+    /* border-bottom: solid;
+    color: #60646d !important; */
+    color: #9e9e9e;
+    display: inline;
+    margin-right: 60%;
+    text-align: left;
+    width: 20%;
+    padding-top: 5px;
+}
+
+
+.save-avance:hover{
+    background-color: #EAF7FF;
+    color: #0678bd !important;
+    cursor: pointer;  
+    
+}
+
+.save-avance:hover div p {
+    margin: 0px;
+}
+
+.save-avance:hover div p {
+    color: #0678bd !important;  
+}
+
+.save-avance:hover div p span {
+    color: #0678bd !important;  
+}
+
+/* Lista de avances  */
+
+.lista-avances{
+    margin-bottom: 20px;
+}
+
+
+
+.avance{
+    
+    border: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-color: #E5E6EB;
+    padding: 8px;
+    height: auto;
+    
+
+}
+
+.avance p {
+    color: #60646d;
+    width: 100%;
+    overflow: auto;
+    display: block;
+    
+}
+
+
+.contenedor{
+    padding: 50px 0 50px 50px;
+    padding-top: 50px;
+    padding-left: 50;   
+    
+    
+}
+
+
+.titles{
+    display: flex;
+    margin-left: -8px;
+    width: 100%;
+    margin-bottom:1vh;
+}
+
+mat-card{
+    height: 70px;
+    min-height: 70px;
+    width: 100%;
+    
+}
+
+
+mat-card-title{
+    font-size:calc(2em + 1vw);
+    margin-right: 10px;
+    margin-left: 20px;
+    margin-bottom: 1vh;
+    /* color: #476D84; */
+    width: 70%;
+    display: contents;
+    margin: 1px;
+}
+
+.mat-card{
+    box-shadow: none !important;
+}
+
+.btn{
+  
+    margin-right: 15px;
+    line-height: 0;
+    padding: 1vh;
+    cursor: pointer;
+
+    
+}
+
+.btn-primary{
+    background-color:#476D84 ;
+    color: white;
+    font-size: calc(10px + 0.4vw);
+    padding: 1px;
+    margin-left: 2vh;
+}
+
+.btn-create{
+
+    background-color:#F8F6E5 ;
+    border-color: #bfa601;
+    border-style: solid;
+    border-width: 2px;
+    color: #bfa601;
+}
+
+
+
+
+.material-icons{
+    color: #9e9e9e ;
+    font-size: 17px;
+    margin-right: 1%;
+    vertical-align: middle;
+
+}
+
+.info-programa{
+    color: #9e9e9e !important;
+    font-size: 16px;
+    margin-right: 2%;
+    vertical-align: middle;
+    
+}

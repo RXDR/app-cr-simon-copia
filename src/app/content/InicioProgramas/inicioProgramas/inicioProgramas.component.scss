@@ -1,0 +1,226 @@
+
+  //menu
+
+  
+
+
+  mat-drawer-inner-container{
+    overflow: hidden;
+  }
+
+
+  #down{
+    background-color: #e2e0e0;
+     margin-top: 11px;
+     margin-left: 5px;
+    
+}
+#down:hover{
+    color: rgb(0, 119, 255);
+    background-color: #d7faff !important;
+  }
+.user_name{
+    font-family:  Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+}
+
+/* RESPONSIVE*/
+@media only screen and (min-width: 1520px) {
+#card-log table{
+  width: 400px;
+  
+}
+#down{
+  background-color: #e2e0e0;
+   margin-top: 11px;
+   margin-left: 5px;
+   width: 40px;
+   font-size: 40px;
+   height: 40px;
+  
+}
+#down:hover{
+  color: rgb(0, 119, 255);
+  background-color: #d7faff !important;
+}
+}
+@media only screen and (max-width: 414px) {
+    .hidd {
+      display: none;
+    }
+    .user_name{
+        display: none;
+    }
+    #avatar{
+        display: none;
+    }
+    #down{
+        background-color: #e2e0e0;
+        margin-right: -5vh;
+        margin-top: -5vh;
+        
+    }
+  }
+@media only screen and (max-width: 414px) {
+    .hidd {
+      display: none;
+    }
+    .user_name{
+        display: none;
+    }
+    #avatar{
+        display: none;
+    }
+    #down{
+        background-color: #e2e0e0;
+        margin-right: -5vh;
+        margin-top: -5vh;
+        
+    }
+  }
+  @media only screen and (max-width: 415px) {
+  #titlelogo{
+    font-size: 9px;
+  }
+    .hidd {
+      display: none;
+    }
+    .user_name{
+        display: none;
+    }
+    #avatar{
+        display: none;
+    }
+    #down{
+        background-color: #e2e0e0;
+       margin: 0;
+        
+    }
+  }
+  a{
+    text-decoration: none;
+  }
+  a:hover{
+    padding: 2PX;
+    font-weight: 300;
+    color: black;
+  }
+
+  #logo{
+    background-color: white;
+  }
+
+ .right{
+  float:right; 
+  font-size:20px;
+  display: none;
+  
+ 
+
+ }
+
+ table td:hover .right{
+display: block;
+
+ }
+
+ @media only screen and (max-width: 390px) {
+    #titlelogo{
+      font-size: 9px;
+    }
+      .hidd {
+        display: none;
+      }
+      .user_name{
+          display: none;
+      }
+      #avatar{
+          display: none;
+      }
+      #down{
+          background-color: #e2e0e0;
+         margin: 0;
+          
+      }
+      #card-log{
+        width: auto;
+      }
+     #card-logo .table{
+        width: auto !important;
+      }
+    }
+  table, td{
+    padding: 2.5px;
+    border: 0px;
+  }
+ 
+  //menu
+  mat-toolbar{
+    width: 100%;
+  }
+
+mat-sidenav{
+  margin: 1px;
+  width: 80px;
+  border-right: none;
+  background-color: white;
+  box-shadow: 2px 1px 0px 0px gray;
+  padding:16px;
+  text-align: center;
+ 
+}
+.content{
+  height: calc(100vh - 98px);
+  margin: 16px;
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  color:lightgray
+}
+
+mat-sidenav-container{
+height: calc(100vh - 65px);
+}
+
+
+  
+.menulateral{
+   
+   
+  margin: auto;
+    padding: 0;
+ width: 11vh;
+   
+   
+  }
+  
+.icon{
+    margin:auto;
+  display: flex;
+  width: 11vh;
+  height: 9vh;
+  top: 0;
+  
+  
+  border-radius: 10%;
+  
+  }
+  .size{
+    font-size: 29px;
+    margin: auto;
+    color: rgb(84, 86, 88);
+    border-radius: 50%;
+    width: auto;
+    padding: auto;
+  
+  }
+
+  @media  (max-width: 1560px) {
+    .perfil{
+font-size: 10px;
+    }
+  }
+  
+  

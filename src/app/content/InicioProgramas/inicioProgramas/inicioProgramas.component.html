@@ -1,0 +1,19 @@
+
+
+
+<app-menu-bar (onToogleBar)="drawer.toggle($event)" ></app-menu-bar>
+
+
+<mat-drawer-container class="mx-auto " style="overflow: hidden; background-color:#f2f3f5; height: calc(100vh - 70px)">
+  <mat-drawer #drawer >
+    <app-menuLat (selected)="selectedScreen($event)"></app-menuLat>
+  </mat-drawer>
+
+  <mat-drawer-content class=" ">
+    <router-outlet></router-outlet>
+    <!-- <app-incio-cr-programa *ngIf="service.selectedItem==1"></app-incio-cr-programa>
+    <app-cronograma-de-actividades *ngIf="service.selectedItem==2"></app-cronograma-de-actividades>
+    <app-cr-Programas *ngIf="service.selectedItem==3"></app-cr-Programas> -->
+  </mat-drawer-content>
+
+</mat-drawer-container>

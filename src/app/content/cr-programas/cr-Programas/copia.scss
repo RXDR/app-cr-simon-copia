@@ -1,0 +1,163 @@
+.titulo{
+    border-radius: 8vh;
+    padding: 2vh;
+    background-color: var(--blue);
+    color: white;
+    font-weight: 400;
+    width: fit-content;
+    position: absolute;
+    margin-top: 13vh;
+    z-index: 1;
+    font-size: calc(15px + 0.4vw );
+   
+}
+table tr td{
+    border: 1px solid;
+}
+#nuevotitulo{
+    position: relative;
+    top: 2vh;
+    z-index: 12;
+    
+    width: max-content;
+   padding: 1vh;
+}
+
+#nuevosubtitulo{
+    position: relative;
+    top: 2vh;
+    z-index: 12;
+    
+    width: max-content;
+   padding: 1vh;
+}
+@media (max-width: 1920px) and ( max-height: 1080px)  {
+
+}
+
+
+ .form-control {
+ 
+   
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.form-control1 {
+ 
+   
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-left: 4px;
+    height: 35px;
+    margin-top: -4px;
+    
+}
+
+
+  
+.nuevoTitulo{
+    
+        border-radius: 8vh;
+        background-color: var(--blue);
+        color: white;
+        font-weight: 400;
+        z-index: 1;
+        font-size: calc(15px + 0.4vw );
+       
+    
+}
+input.largerCheckbox {
+    width: 30px;
+    height: 20px;
+
+}
+mat-card-title{
+    font-size: calc(5px + 1vw );
+    color: var(--gray);
+}
+.row{
+    margin-top: 5vh;
+}
+small{
+    color: var(--alert);
+    font-family: cursive;
+}
+
+.titulo2{
+    border-radius: 8vh;
+    padding: 2vh;
+    background-color: #1a74bf;
+    color: white;
+    font-weight: 400;
+    width: fit-content;
+    position: absolute;
+    margin-top: -1vh;
+    z-index: 1;
+    font-size: calc(12px + 0.4vw );
+}
+.card{
+    border-radius: 2vh;
+}
+
+.form-control{
+    border-radius:8px;
+    border-color: #1a74bf;
+   height:39px;
+  width: 200px;
+    top: -5px;
+    margin-top: -4px;
+}
+
+.form-control1{
+    border-radius:8px;
+    border-color: #1a74bf;
+   
+  
+    
+}
+.col-8{
+    display: -webkit-box;
+}
+.col-4{
+    display: -webkit-box;
+   
+}
+
+.col{
+    display: flex;
+   
+}
+
+label{
+    font-size: calc(9px + 0.4vw );
+    text-align: center;
+    color: #204d71;
+    margin-right: 2px;
+  display: flex !important;
+}
+
+.form-control{
+
+    text-transform: uppercase;
+}
+
+select option{
+    text-transform: uppercase;
+}
+
+.hidden{
+    display: none;
+}

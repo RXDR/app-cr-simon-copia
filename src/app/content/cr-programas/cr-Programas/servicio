@@ -1,0 +1,1086 @@
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { CiudadesService } from 'src/app/core/services/ciudad/ciudad.service';
+import { DepartamentosService } from 'src/app/core/services/departamento/departamentos.service';
+import { FacultadService } from 'src/app/core/services/facultad/facultad.service';
+import { ModalidadService } from 'src/app/core/services/modalidad/modalidad.service';
+import { NivelesAcademicoService } from 'src/app/services/nivelAcademico/nivelesAcademico.service';
+import { NivelAcademicoPrgService } from 'src/app/core/services/nivelAcademicoPrg/nivelAcademicoPrg.service';
+import { PaisesService } from 'src/app/core/services/pais/paises.service';
+import { NivelAcademicoPrg } from 'src/app/core/models/nivelAcademicoPrg/nivelAcademicoPrg';
+
+import { Pais } from 'src/app/core/models/pais/pais';
+import { Departamento } from 'src/app/core/models/departamento/departamento';
+import { Ciudad } from 'src/app/core/models/ciudad/ciudad';
+import { NivelesAcademico } from 'src/app/services/nivelAcademico/nivelesAcademico';
+import { Modalidad } from 'src/app/core/models/modalidad/modalidad';
+import { Facultad } from 'src/app/core/models/facultad/facultad';
+import { ProgramasService } from 'src/app/core/services/programa/programas.service';
+import { TipoPrograma } from 'src/app/core/models/tipoPrograma/tipoPrograma';
+import { TipoProgramaService } from 'src/app/core/services/tipo-programa/tipoPrograma.service';
+
+
+import { Denominacion } from 'src/app/core/models/denominacion/denominacion';
+import { Proceso } from 'src/app/core/models/proceso/proceso';
+import { Router } from '@angular/router';
+import { DenominacionesProgramaService } from 'src/app/core/services/denominacionesPrograma/denominacionesPrograma.service';
+import { Formulario } from 'src/app/core/models/form/formulario';
+import { Creacion2ProgramaService } from 'src/app/core/services/creacion2Programa/creacion2Programa.service';
+import { EdicionBorradorService } from 'src/app/core/services/edicion/edicionBorrador.service';
+import { DenominacionService } from 'src/app/core/services/denominacion/denominacion.service';
+import { forkJoin, Subject, debounceTime, window } from 'rxjs';
+import { Message, MessageService } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+import { InicioProgramaService } from 'src/app/core/services/inicio-programa/inicio-programa.service';
+import { ProcesoService } from 'src/app/core/services/proceso/proceso.service';
+import { ConfirmationService } from 'primeng/api';
+import { AdmisionPrgService } from 'src/app/core/services/admisionPrg/admisionPrg.service';
+import { JornadaOfreService } from 'src/app/core/services/jornadaOfre/jornadaOfre.service';
+import { AdmisionPrg } from 'src/app/core/models/admisionProgr/admisionPrg';
+import { JornadaOfre } from 'src/app/core/models/jornadaOfre/jornadaOfre';
+import { ThisReceiver } from '@angular/compiler';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmComponent } from 'src/app/messages/confirm/confirm.component';
+import { MessageComponent } from 'src/app/messages/message/message.component';
+import { EdicionService } from 'src/app/core/services/modificacion/edicion.service';
+import { ModalidadTipoComponent } from '../../modalidadTipo/modalidadTipo/modalidadTipo.component';
+import { CampoAmpService } from 'src/app/core/services/campoAmp/campoAmp.service';
+import { CampoAmp } from 'src/app/core/models/campoAmp/campoAmp';
+import { NivelFormacionService } from 'src/app/core/services/formacion/nivelFormacion.service';
+
+
+
+
+@Component({
+  selector: 'app-cr-Programas',
+  templateUrl: './cr-Programas.component.html',
+  styleUrls: ['./cr-Programas.component.scss'],
+  providers: [ConfirmationService]
+})
+export class CrProgramasComponent implements OnInit {
+
+  firstFormGroup = this.formBuild.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this.formBuild.group({
+    secondCtrl: ['', Validators.required],
+  });
+  isLinear = false;
+
+  msgs: Message[] = [];
+
+  position: string;
+  private _admisionPrg: AdmisionPrg[] = []
+  private _jornadaOfre: JornadaOfre[] = []
+  campoAmplio:any
+  obligatorios: number;
+  electivos: number;
+  result: number;
+  procesosToShow: Proceso[];
+  showProcesosBox: boolean = true;
+  procesoPrograma: Proceso;
+  procesos: Proceso[];
+  formulario: any;
+  formulaCreacion: Formulario[];
+  proId: any;
+  denominacionSelected: Denominacion;
+  facult: Facultad[];
+  depa: Departamento[];
+  paises: Pais[];
+  ciudades: Ciudad[];
+  nivelesAcPr: NivelAcademicoPrg[];
+  nivelesAcade: any;
+  modalidades: Modalidad[];
+  tipoPro: TipoPrograma[];
+  denominacion:Denominacion;
+  disable:boolean=true;
+  //---*ngif
+  show1:boolean;
+  show2:boolean;
+  sw: Boolean = false;
+  borrador: Boolean = false;
+  readonly: boolean = false;
+  proces2: boolean = false;
+  show:boolean=false;
+  slect:boolean=false;
+  showMod:boolean=true;
+  hideMod:boolean=false;
+  readRenov:boolean=false;
+  textarea:boolean=false;
+  dateCreacion=false;
+  public valiDat: boolean = true;
+  programaId: number;
+  edicionD: any;
+  selected = 'option2';
+  private _formBuilder: any;
+  duracionesProgramas: AdmisionPrg[];
+  campoEspe: any;
+  idCampo: number;
+  idDeta: number;
+  campoDetallado: any;
+  idformacion: any;
+  nvlFormacion: any;
+
+  get admisionPrg(): AdmisionPrg[] {
+
+    return [...this._admisionPrg];
+  }
+  get jornadaOfre(): JornadaOfre[] {
+    return [...this._jornadaOfre];
+  }
+
+
+  constructor(private formBuild: FormBuilder,
+    private facultadeService: FacultadService,
+    private paisesService: PaisesService,
+    private depaService: DepartamentosService,
+    private ciudadeService: CiudadesService,
+    private nivelAcademicoPr: NivelAcademicoPrgService,
+    private nivelesAcadem: NivelesAcademicoService,
+    private modalidadService: ModalidadService,
+    private programaService: ProgramasService,
+    private tipoProgramas: TipoProgramaService,
+    private denominacionService: DenominacionService,
+    private router: Router,
+    private creacion2Programa: Creacion2ProgramaService,
+    private edicionBorrador: EdicionBorradorService,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
+    public inicioService: InicioProgramaService,
+    private procesoService: ProcesoService,
+    private confirmationService: ConfirmationService,
+    private admisionesPrg: AdmisionPrgService,
+    private jornadaOfrecim: JornadaOfreService,
+    private edicionDenominacion:EdicionService,
+    private matDIal:MatDialog,
+    private campoAmpSvc:CampoAmpService,
+    private nivelFormacion:NivelFormacionService
+  ) {
+
+  }
+
+
+  confirm1() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' }];
+      },
+      reject: () => {
+        this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+      }
+    });
+  }
+
+
+  openDialog() {
+    const dialogRef = this.matDIal.open(ModalidadTipoComponent,
+      {
+        width: '800px',
+      }
+      );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+
+  ngOnInit() {
+    //message
+
+    this.buildForm();
+    this.getCampoAmpo()
+    //
+    this.duaracionPrograma()
+
+this.show1=false
+this.show2=false
+
+    this.getJornadaOfr();
+    this.getAdmisiones();
+    this.primengConfig.ripple = true;
+    this.programaId=this.procesoService.getPrograma().id
+    this.proId = this.procesoService.getProceso().id;
+    const observables = forkJoin({
+      tipoProgramas: this.tipoProgramas.cargarTipoPrograma(),
+      facultades: this.facultadeService.loadFacultades(),
+      nivelAcademicoPr: this.nivelAcademicoPr.cargarNivelesPr(),
+      ciudades: this.ciudadeService.cargarCiudad(),
+      paises: this.paisesService.cargarPais(),
+      departamentos: this.depaService.cargarDepa(),
+      nivelAcademico: this.nivelesAcadem.cargarNivelAcadem(),
+      modalidades: this.modalidadService.cargarModalidades()
+    });
+    observables.subscribe({
+      next: (value) => {
+        this.setTipoPrograma(value.tipoProgramas['data']);
+        this.setFacultades(value.facultades['data']);
+        this.setNivelAcPr(value.nivelAcademicoPr['data']);
+        this.setCiudades(value.ciudades['data']);
+        this.setPaises(value.paises['data']);
+        this.setDepartamentos(value.departamentos['data']);
+        this.setNivelAcademico(value.nivelAcademico['data']);
+        this.setModalidades(value.modalidades['data']);
+
+      }
+    });
+    if (this.proId == 3) {
+      this.borrador = true;
+    }
+  }
+
+  setFacultades(argument: Array<any>) {
+    this.facult = argument;
+    console.log(this.facult)
+  }
+  setDepartamentos(de: []) {
+    this.depa = de
+  }
+  setPaises(pa = []) {
+    this.paises = pa
+  }
+  setCiudades(ci = []) {
+    this.ciudades = ci
+  }
+  setNivelAcPr(niv = []) {
+    this.nivelesAcPr = niv
+  }
+  setNivelAcademico(niva = []) {
+    this.nivelesAcade = niva
+  }
+  setModalidades(mod = []) {
+    this.modalidades = mod;
+  }
+  setTipoPrograma(tip = []) {
+    this.tipoPro = tip;
+  }
+
+  getCampoAmpo(){
+    this.campoAmpSvc.getCampoAmp().subscribe(resp=>{
+      console.log(resp)
+      this.campoAmplio=resp['data']
+    })
+  }
+  OnCampoEspe(event:any){
+    console.log(event)
+    this.idCampo=parseInt(event)
+    this.campoAmpSvc.getCampoEspe(this.idCampo).subscribe(resp=>{
+      console.log(resp)
+      this.campoEspe=resp['data']
+    })
+  }
+
+  OnCampodetall(event:any){
+    console.log(event)
+    this.idDeta=parseInt(event)
+    this.campoAmpSvc.getCampoDeta(this.idDeta).subscribe(resp=>{
+      console.log(resp)
+      this.campoDetallado=resp['data']
+    })
+  }
+  //la facultad va dentro del programa
+
+  getAdmisiones(): void {
+    this.admisionesPrg.admisionPrograma().subscribe(
+      admisionesPrg => this._admisionPrg = admisionesPrg
+    )
+  }
+  duaracionPrograma(){
+    this.admisionesPrg.duracionPrograma().subscribe(
+      resp=>{
+        this.duracionesProgramas=resp
+      }
+    )
+  }
+
+  getJornadaOfr(): void {
+    this.jornadaOfrecim.jornadaOfrec().subscribe(
+      jornadaofrec => this._jornadaOfre = jornadaofrec
+    )
+  }
+
+  private buildForm(): void {
+    this.result = parseInt(localStorage.getItem('re'))
+    console.log(this.result)
+    let id = this.procesoService.getProceso().id;
+    if (id == 1) {
+      console.log('creacion 2')
+
+      ///Creación del programa 2
+      this.formulario = this.formBuild.group({
+        campoAmp: ['', [Validators.required]],
+        campoDetall: ['', [Validators.required]],
+        campoEspecifico: ['', [Validators.required]],
+        codigoRu: ['', [Validators.required]],
+        denominacionVigenteId: [''],
+        departamento: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          depaCodi: ['', [Validators.required]],
+        }),
+        duracion: ['', [Validators.required]],
+        estado: ['', [Validators.required]],
+        fechaRes: ['', [Validators.required]],
+        id: ['', [Validators.required]],
+        intExpNorma: ['', [Validators.required]],
+        jornadaDeOfrecimiento: ['', [Validators.required]],
+        modalidad: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: ['', [Validators.required]]
+        }),
+        municipio: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]]
+        }),
+
+        ncreditosElectivos: ['', [Validators.required]],
+        ncreditosObligatorios: [this.obligatorios, [Validators.required]],
+        ndeRes: ['', [Validators.required]],
+        nivelAcademicoPrg: this.formBuild.group({
+          
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: [''],
+        }),
+        nnorma: ['', [Validators.required]],
+        normaIntCreacion: ['', [Validators.required]],
+        ntotalCreditos: ['', [Validators.required]],
+        numeroDeEstudientesEnPrimerPeriodo: ['', [Validators.required]],
+        pais: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          paisCodi: ['', [Validators.required]]
+        }),
+        periodAdmision: ['', [Validators.required]],
+        porcInclTecno: ['', [Validators.required]],
+        proceso: this.formBuild.group({
+          estado: ['', [Validators.required]],
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+        }),
+        programa: this.formBuild.group({
+          activo: [''],
+          facultad: this.formBuild.group({
+            codigo: ['', [Validators.required]],
+            nombre: ['', [Validators.required]]
+          }),
+          id: ['', Validators.required],
+          nivelAcademico: this.formBuild.group({
+            id: ['', [Validators.required]],
+            nombre: ['', [Validators.required]],
+            activo: [''],
+            formacion: [''],
+          }),
+          nombre: ['', [Validators.required]],
+          programaVigenteId: [''],
+        }),
+        registroCalificadoUnico: ['', [Validators.required]],
+        resolucion: ['', [Validators.required]],
+        snies: ['', [Validators.required]],
+        tipoPrograma: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: [''],
+        }),
+        tituloM: ['', [Validators.required]],
+        tituloF: ['', [Validators.required]],
+        ubicacionOLugarDesarrolloVigenteIes: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]],
+
+        }),
+        valorMatricula: ['', [Validators.required]],
+        vigLugarDes: ['', [Validators.required]],
+        cupoCohorte: ['', [Validators.required]],
+        textareaObserv: [''],
+        fechaSer: ['',null],
+      });
+
+
+
+
+      setTimeout(() => {
+
+        this.formulario.setValue(this.denominacionService.getDenominacion());
+        this.readonly = false;
+        this.slect=true;
+        this.textarea=true;
+        this.dateCreacion=true;
+      });
+      /*
+      this.formulario.get('programa.nivelAcademico').disable();
+      this.formulario.get('tipoPrograma').disable();
+      this.formulario.get('tituloF').disable();
+      this.formulario.get('tituloM').disable();
+      this.formulario.get('programa.nombre').disable();
+      this.formulario.get('programa.facultad').disable();
+      this.formulario.get('ubicacionOLugarDesarrolloVigenteIes').disable();
+      this.formulario.get('pais').disable();
+      this.formulario.get('municipio').disable();
+      this.formulario.get('departamento').disable();
+      this.formulario.get('modalidad').disable(); 
+      this.formulario.get('nivelAcademicoPrg').disable(); 
+     
+     */
+      this.sw = true;
+      this.proces2=true;
+      
+    }
+
+    //modificacion
+    if (id == 3) {
+      console.log('Modificacion')
+      this.formulario = this.formBuild.group({
+        campoAmp: ['', [Validators.required]],
+        campoDetall: ['', [Validators.required]],
+        campoEspecifico: ['', [Validators.required]],
+        codigoRu: ['', [Validators.required]],
+        denominacionVigenteId: [''],
+        departamento: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          depaCodi: ['', [Validators.required]],
+        }),
+        duracion: ['', [Validators.required]],
+        estado: ['', [Validators.required]],
+        fechaRes: ['', [Validators.required]],
+        id: ['', [Validators.required]],
+        intExpNorma: ['', [Validators.required]],
+        jornadaDeOfrecimiento: ['', [Validators.required]],
+        modalidad: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: ['', [Validators.required]]
+        }),
+        municipio: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]]
+        }),
+
+        ncreditosElectivos: ['', [Validators.required]],
+        ncreditosObligatorios: [this.obligatorios, [Validators.required]],
+        ndeRes: ['', [Validators.required]],
+        nivelAcademicoPrg: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: [''],
+        }),
+        nnorma: ['', [Validators.required]],
+        normaIntCreacion: ['', [Validators.required]],
+        ntotalCreditos: ['', [Validators.required]],
+        numeroDeEstudientesEnPrimerPeriodo: ['', [Validators.required]],
+        pais: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          paisCodi: ['', [Validators.required]]
+        }),
+        periodAdmision: ['', [Validators.required]],
+        porcInclTecno: ['', [Validators.required]],
+        proceso: this.formBuild.group({
+          estado: ['', [Validators.required]],
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+        }),
+        programa: this.formBuild.group({
+          activo: [''],
+          facultad: this.formBuild.group({
+            codigo: ['', [Validators.required]],
+            nombre: ['', [Validators.required]]
+          }),
+          id: ['', Validators.required],
+          nivelAcademico: this.formBuild.group({
+            id: ['', [Validators.required]],
+            nombre: ['', [Validators.required]],
+            activo: [''],
+            formacion: [''],
+          }),
+          nombre: ['', [Validators.required]],
+          programaVigenteId: [''],
+        }),
+        registroCalificadoUnico: ['', [Validators.required]],
+        resolucion: ['', [Validators.required]],
+        snies: ['', [Validators.required]],
+        tipoPrograma: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: [''],
+        }),
+        tituloM: ['', [Validators.required]],
+        tituloF: ['', [Validators.required]],
+        ubicacionOLugarDesarrolloVigenteIes: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]],
+
+        }),
+        valorMatricula: ['', [Validators.required]],
+        vigLugarDes: ['', [Validators.required]],
+        cupoCohorte: ['', [Validators.required]],
+        textareaObserv: ['',],
+        fechaSer: ['', [Validators.required]],
+      });
+
+
+
+      setTimeout(() => {
+       
+        this.formulario.setValue(this.denominacionService.getDenominacion());
+        this.readonly = false;
+        this.showMod=false;
+        this.hideMod=true;
+        this.readRenov=true;
+        this.dateCreacion=true;
+      });
+      /*
+      this.formulario.get('programa.nivelAcademico').disable();
+      this.formulario.get('tipoPrograma').disable();
+      this.formulario.get('tituloF').disable();
+      this.formulario.get('tituloM').disable();
+      this.formulario.get('programa.nombre').disable();
+      this.formulario.get('programa.facultad').disable();
+      this.formulario.get('ubicacionOLugarDesarrolloVigenteIes').disable();
+      this.formulario.get('pais').disable();
+      this.formulario.get('municipio').disable();
+      this.formulario.get('departamento').disable();
+      this.formulario.get('modalidad').disable(); 
+      this.formulario.get('nivelAcademicoPrg').disable(); 
+     
+     */
+      this.sw = true;
+      this.proces2=true;
+      this.readonly;
+    }
+
+    //creacion 1 sin verificación
+    if (id == null && id != 1 && id != 3 && id != 2) {
+
+      this.formulario = this.formBuild.group({
+        campoAmp: [''],
+        campoDetall: [''],
+        campoEspecifico: [''],
+        codigoRu: [''],
+        denominacionVigenteId: [''],
+        departamento: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          depaCodi: ['', [Validators.required]],
+        }),
+        duracion: [''],
+        estado: [''],
+        fechaRes: ['',],
+        id: [''],
+        intExpNorma: [''],
+        jornadaDeOfrecimiento: [''],
+        modalidad: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: ['', [Validators.required]]
+        }),
+        municipio: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]]
+        }),
+        ncreditosElectivos: [''],
+        ncreditosObligatorios: [''],
+        ndeRes: [''],
+        nivelAcademicoPrg: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: [''],
+
+        }),
+        nnorma: [''],
+        normaIntCreacion: [''],
+        ntotalCreditos: [''],
+        numeroDeEstudientesEnPrimerPeriodo: [''],
+        pais: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          paisCodi: ['', [Validators.required]]
+        }),
+        periodAdmision: [''],
+        porcInclTecno: [''],
+        proceso: this.formBuild.group({
+          estado: [''],
+          id: [''],
+          nombre: [''],
+        }),
+        programa: this.formBuild.group({
+          activo: [''],
+          facultad: this.formBuild.group({
+            codigo: ['', [Validators.required]],
+            nombre: ['', [Validators.required]],
+          }),
+          id: [''],
+          nivelAcademico: this.formBuild.group({
+            id: ['', [Validators.required]],
+            nombre: [''],
+            activo: [''],
+            formacion: [''],
+          }),
+          nombre: ['', [Validators.required]],
+          programaVigenteId: [''],
+        }),
+        registroCalificadoUnico: [''],
+        resolucion: [''],
+        snies: ['',],
+        tipoPrograma: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: [''],
+        }),
+        tituloM: ['', [Validators.required]],
+        tituloF: ['', [Validators.required]],
+        ubicacionOLugarDesarrolloVigenteIes: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]],
+        }),
+        valorMatricula: [''],
+        vigLugarDes: [''],
+        cupoCohorte: [''],
+        textareaObserv: [''],
+        fechaSer: ['', [Validators.required]],
+
+      });
+      this.textarea=true;
+      this.proces2=true;
+    }
+
+    if (id == 2) {
+      console.log('creacion 2')
+
+      ///renovación
+      this.formulario = this.formBuild.group({
+        campoAmp: ['', [Validators.required]],
+        campoDetall: ['', [Validators.required]],
+        campoEspecifico: ['', [Validators.required]],
+        codigoRu: ['', [Validators.required]],
+        denominacionVigenteId: [''],
+        departamento: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          depaCodi: ['', [Validators.required]],
+        }),
+        duracion: ['', [Validators.required]],
+        estado: ['', [Validators.required]],
+        fechaRes: ['', [Validators.required]],
+        id: ['', [Validators.required]],
+        intExpNorma: ['', [Validators.required]],
+        jornadaDeOfrecimiento: ['', [Validators.required]],
+        modalidad: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: ['', [Validators.required]]
+        }),
+        municipio: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]]
+        }),
+
+        ncreditosElectivos: ['', [Validators.required]],
+        ncreditosObligatorios: [this.obligatorios, [Validators.required]],
+        ndeRes: ['', [Validators.required]],
+        nivelAcademicoPrg: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          estado: [''],
+        }),
+        nnorma: ['', [Validators.required]],
+        normaIntCreacion: ['', [Validators.required]],
+        ntotalCreditos: ['', [Validators.required]],
+        numeroDeEstudientesEnPrimerPeriodo: ['', [Validators.required]],
+        pais: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          paisCodi: ['', [Validators.required]]
+        }),
+        periodAdmision: ['', [Validators.required]],
+        porcInclTecno: ['', [Validators.required]],
+        proceso: this.formBuild.group({
+          estado: ['', [Validators.required]],
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+        }),
+        programa: this.formBuild.group({
+          activo: [''],
+          facultad: this.formBuild.group({
+            codigo: ['', [Validators.required]],
+            nombre: ['', [Validators.required]]
+          }),
+          id: ['', Validators.required],
+          nivelAcademico: this.formBuild.group({
+            id: ['', [Validators.required]],
+            nombre: ['', [Validators.required]],
+            activo: [''],
+            formacion: [''],
+          }),
+          nombre: ['', [Validators.required]],
+          programaVigenteId: [''],
+        }),
+        registroCalificadoUnico: ['', [Validators.required]],
+        resolucion: ['', [Validators.required]],
+        snies: ['', [Validators.required]],
+        tipoPrograma: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: [''],
+        }),
+        tituloM: ['', [Validators.required]],
+        tituloF: ['', [Validators.required]],
+        ubicacionOLugarDesarrolloVigenteIes: this.formBuild.group({
+          id: ['', [Validators.required]],
+          nombre: ['', [Validators.required]],
+          ciudCodi: ['', [Validators.required]],
+          departamentoId: ['', [Validators.required]],
+
+        }),
+        valorMatricula: ['', [Validators.required]],
+        vigLugarDes: ['', [Validators.required]],
+        cupoCohorte: ['', [Validators.required]],
+        textareaObserv: ['',],
+        fechaSer: [''],
+      });
+
+
+
+      setTimeout(() => {
+        
+
+        this.formulario.setValue(this.denominacionService.getDenominacion());
+        this.readonly = true;
+        this.proces2 = false;
+        this.show=true;
+        this.slect=true;
+        this.dateCreacion=true;
+      });
+      /*
+      this.formulario.get('programa.nivelAcademico').disable();
+      this.formulario.get('tipoPrograma').disable();
+      this.formulario.get('tituloF').disable();
+      this.formulario.get('tituloM').disable();
+      this.formulario.get('programa.nombre').disable();
+      this.formulario.get('programa.facultad').disable();
+      this.formulario.get('ubicacionOLugarDesarrolloVigenteIes').disable();
+      this.formulario.get('pais').disable();
+      this.formulario.get('municipio').disable();
+      this.formulario.get('departamento').disable();
+      this.formulario.get('modalidad').disable(); 
+      this.formulario.get('nivelAcademicoPrg').disable(); 
+     
+     */
+
+    }
+
+
+
+  }
+  showViaService() {
+    this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+    this.confirm1
+    this.inicioService.selectedItem = 1;
+    this.router.navigate[('menu')]
+  }
+  hide() {
+    this.msgs = [];
+  }
+
+
+  //onchangeobligatorio
+
+  onChangeObligatorio(event: any) {
+    this.obligatorios = parseInt(event.value)
+    this.result = this.electivos + this.obligatorios
+    this.formulario.get('ntotalCreditos').setValue(this.result);
+  }
+  //onchange Electivos
+  onChangeElectivo(event: any) {
+    this.electivos = parseInt(event.value)
+    this.result = this.electivos + this.obligatorios
+
+    this.formulario.get('ntotalCreditos').setValue(this.result);
+  }
+
+
+  //onChangeJornada
+  onChangeJornada(event: any): void {
+    const pTemp: JornadaOfre = this.jornadaOfre.find((p) => p.id == event.value)!;
+    this.formulario.get('jornadaDeOfrecimiento').setValue(pTemp)
+  }
+  //onChangeAdmision
+  onChangeAdmision(event: any): void {
+    const pTemp: AdmisionPrg = this.admisionPrg.find((p) => p.id == event.value)!;
+    this.formulario.get('periodAdmision').setValue(pTemp)
+  }
+
+
+  //onchange nivel academicoPrg
+  onChangeNivelAcademicoPrg(event: any): void {
+    //const pTemp: NivelAcademicoPrg = this.nivelesAcPr.find((p) => p.id == event.value)!;
+    //this.formulario.get('nivelAcademicoPrg').setValue(pTemp);
+    this.idformacion=event
+    console.log(event)
+    this.nivelFormacion.cargarNivelFormacion(event).subscribe((response) => {
+     // this.setNivelAcademico(response.data);
+      this.nvlFormacion=response.data;
+      console.log(this.nvlFormacion)
+    })
+
+
+  }
+  //onchange nivel academico
+  onChangeNivelAcademico(event: any): void {
+    
+    
+    const pTemp: NivelesAcademico = this.nivelesAcade.find((p) => p.id == event.value)!;
+    this.formulario.get('programa.nivelAcademico').setValue(pTemp)
+
+
+  }
+  //onchange Tipo Programa
+  onChangeTipoPrograma(event: any): void {
+    const pTemp: TipoPrograma = this.tipoPro.find((p) => p.id == event.value)!;
+    this.formulario.get('tipoPrograma').setValue(pTemp)
+
+  }
+
+  //Onchange formulario
+  onChangePais(event: any): void {
+    const pTemp: Pais = this.paises.find((p) => p.id == event.value)!;
+    this.formulario.get('pais').setValue(pTemp)
+  }
+  //facultad
+
+  onChangeFacultad(event: any): void {
+    const pTemp: Facultad = this.facult.find((p) => p.id == event.value)!;
+    this.formulario.get('programa.facultad').setValue(pTemp)
+
+  }
+  //departamento
+  onChangeDepartamento(event: any): void {
+    const pTemp: Departamento = this.depa.find((p) => p.id == event.value)!;
+    this.formulario.get('departamento').setValue(pTemp)
+    this.ciudadeService.cargarCiudadFiltro(event.value).subscribe(response => {
+      this.setCiudades(response.data);
+    });
+
+  }
+  //ciudades
+  onChangeCiudades(event: any): void {
+
+    const pTemp: Ciudad = this.ciudades.find((p) => p.id == event.value)!;
+    this.formulario.get('municipio').setValue(pTemp)
+  }
+  //modalidad
+  onChangeModalidad(event: any): void {
+    const pTemp: Modalidad = this.modalidades.find((p) => p.id == event.value)!;
+    this.formulario.get('modalidad').setValue(pTemp)
+  }
+  //ubicacion
+  //modalidad
+  onChangeUbicacionLugar(event: any): void {
+    const pTemp: Ciudad = this.ciudades.find((p) => p.id == event.value)!;
+    this.formulario.get('ubicacionOLugarDesarrolloVigenteIes').setValue(pTemp)
+  }
+  //prueba
+  invalid(campo: AbstractControl | null): boolean {
+    return campo?.touched && campo?.invalid;
+  }
+
+  valid(campo: AbstractControl | null): boolean {
+    return campo?.touched && campo?.valid;
+  }
+  valideteField(campo: string) {
+    if (this.valiDat == false) {
+      return this.formulario.get(campo).invalid;
+
+    }
+
+    return this.formulario.get();
+
+  }
+
+
+  f(campo: string) {
+    let id = this.procesoService.getProceso().id;
+    if (this.valiDat == false) {
+      return this.formulario.get(campo);
+
+    }
+
+    return this.formulario.get();
+
+  }
+
+
+
+
+
+
+
+  Borrador() {
+    const dialogRef = this.matDIal.open (MessageComponent, {
+      disableClose: false,
+      panelClass: 'confirm-dialog'
+    });
+  
+    let msn ="Se ha guardado borrador Correctamente";
+    
+    dialogRef.componentInstance.confirmMessage = msn;
+  
+    dialogRef.afterClosed ().subscribe (result =>
+    {
+      if (result){
+
+      }
+      
+    });
+
+    
+    this.edicionBorrador.edicionBorrador(this.formulario.value).subscribe(resp => {
+      this.borrador = false;
+      this.disable=false;
+
+    });
+   
+    console.log(this.formulario.value)
+    this.confirm1
+  }
+
+  Grabar() {
+
+   
+    if (this.formulario.valid) {
+      this.creacion2Programa.edicion2(this.formulario.value).subscribe(resp => {
+
+        this.showViaService
+      });
+      const dialogRef = this.matDIal.open (MessageComponent, {
+        disableClose: false,
+        panelClass: 'confirm-dialog'
+      });
+    
+      let msn ="Se ha guardado el formulario";
+      
+      dialogRef.componentInstance.confirmMessage = msn;
+    
+      dialogRef.afterClosed ().subscribe (result =>
+      {
+        if (result){
+          this.router.navigate(['menu'])
+        }
+        
+      });
+     
+    }
+
+
+
+
+  }
+
+
+  onSubmit() {
+    this.valiDat = false
+    console.log(this.formulario.value)
+
+
+    this.formulario.markAllAsTouched();
+    this.formulario.updateValueAndValidity();
+
+    let pro = this.procesoService.getProceso();
+
+
+    if (pro.id == null && pro.id != 1 && this.formulario.valid) {
+      this.programaService.creacionPrograma(this.formulario.value).subscribe(resp => {
+        this.showViaService()
+        this.inicioService.selectedItem = 1;
+
+        const dialogRef = this.matDIal.open (MessageComponent, {
+          disableClose: false,
+          panelClass: 'confirm-dialog'
+        });
+      
+        let msn ="Se ha guardado el formulario";
+        
+        dialogRef.componentInstance.confirmMessage = msn;
+      
+        dialogRef.afterClosed ().subscribe (result =>
+        {
+          if (result){
+            this.router.navigate(['menu'])
+          }
+          
+        });
+
+
+      })
+
+
+    } if (pro.id == 1 && this.formulario.valid) {
+      console.log(this.formulario.value);
+
+      this.creacion2Programa.creacion2Programa(this.formulario.value).subscribe(resp => {
+        this.showViaService()
+        this.inicioService.selectedItem = 1;
+        const dialogRef = this.matDIal.open (MessageComponent, {
+          disableClose: false,
+          panelClass: 'confirm-dialog'
+        });
+      
+        let msn ="Se ha guardado el formulario";
+        
+        dialogRef.componentInstance.confirmMessage = msn;
+      
+        dialogRef.afterClosed ().subscribe (result =>
+        {
+          if (result){
+            this.router.navigate(['menu'])
+          }
+          
+        });
+
+      })
+    } if (this.formulario.invalid) {
+      const dialogRef = this.matDIal.open (MessageComponent, {
+        disableClose: false,
+        panelClass: 'confirm-dialog'
+      });
+    
+      let msn ="Error al guardar formulario, verifique todos los campos";
+      
+      dialogRef.componentInstance.confirmMessage = msn;
+    
+      dialogRef.afterClosed ().subscribe (result =>
+      {
+        if (result){
+          
+        }
+        
+      });
+      // this.router.navigate(['crearprograma'])
+
+    }
+
+
+  }
+
+}
+
+
+
+
+
+

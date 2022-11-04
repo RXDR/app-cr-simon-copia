@@ -1,0 +1,274 @@
+<div class="contenedor">
+
+  <div class="main">
+    <!-- <h2 mat-dialog-title>{{ cronograma.titulo }} </h2> -->
+
+    <div class="icons-back" (click)="onNoClick()">
+      <mat-icon style="font-size: 5vh;
+        height: 6vh;">keyboard_backspace</mat-icon>
+    </div>
+    <mat-dialog-content class="mat-typography">
+      
+      <div class="title">
+       
+        
+        <mat-card style="padding:3vh 0 10vh 5vh;">
+          <div class="titles ">
+
+            <mat-card-title class="">{{nombreCronograma}} &nbsp;</mat-card-title>
+            <button mat-raised-button class="btn btn-primary">{{facultadName}} </button>
+            <button mat-raised-button class="btn btn-create ">Creación</button>
+          </div>
+
+          <mat-card-subtitle>
+            <span class="material-icons">perm_identity</span>
+            <span class="text-muted info-programa capitalize">{{formacionName}}</span>
+
+            <span class="material-icons">room</span>
+            <span class="text-muted info-programa capitalize">{{ubicacionName}}</span>
+
+            <span class="material-icons">account_box</span>
+            <span class="text-muted info-programa uppercase">{{modalidadName}}</span>
+            <button mat-raised-button class="btn btn-info float-right" style="background-color:var(--titulo); 
+            padding:1.2vh ;color: white;font-weight: 700;" (click)="inactivar()">
+              Inactivación</button>
+            <button mat-raised-button class="btn btn-create float-right" style="padding:1vh" (click)="block()">Editar</button>
+           
+          </mat-card-subtitle>
+
+
+        </mat-card>
+
+
+      </div>
+
+
+
+      <div class="cuerpo" style="padding-left:5vh;">
+
+        <form [formGroup]="formulario" (ngSubmit)="Submit()" novalidate>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">watch_later</span>
+
+              <label for="" class="info">Ciclo de rádicación</label>
+
+              <select type="text" placeholder="vacio" formControlName="ciclo" style="width:60%;">
+                <option class="" [disabled]="disbled1" *ngFor="let norma of _cicloRadicacion" [value]="norma.nombre">{{norma.nombre}}</option>
+                </select>
+            </div>
+          </div>
+
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">watch_later</span>
+              <label for="" class="info">Fecha de entrega</label>
+              <input [readOnly]="disbled1" type="datetime-local" placeholder="vacio" formControlName="fechaEntrega" id="" >
+            </div>
+
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">format_list_bulleted</span>
+              <label for="" class="info">Responsable</label>
+              <select  type="text" placeholder="vacio" formControlName="funcionarioResp" style="width:60%;">
+              <option [disabled]="disbled1" *ngFor="let persona of personas" [value]="persona.documento">{{persona.nombre1}} {{persona.id}} {{persona.nombre2}}
+                 {{persona.apellido1}} {{persona.apellido2}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">notes</span>
+              <label for="" class="info">Avances de condiciones</label>
+              <input [readOnly]="disbled1" type="text" placeholder="vacio" id="" formControlName="avances">
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">watch_later</span>
+              <label for="" class="info">Fecha de entrega final</label>
+              <input [readOnly]="disbled1" type="datetime-local" placeholder="vacio" formControlName="fechaFinal" id="">
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">expand_circle_down</span>
+              <label for="" class="info">Docencia servicio</label>
+              <select type="text" placeholder="vacio" formControlName="docenciaServicio" style="width:60%;">
+                <option class="" [disabled]="disbled1" *ngFor="let norma of _docenciaServ" [value]="norma.nombre">{{norma.nombre}}</option>
+                </select>
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">expand_circle_down</span>
+              <label for="" class="info">Norma interna</label>
+              <select type="text" placeholder="vacio" formControlName="normaInterna" style="width:60%;">
+              <option class="" [disabled]="disbled1" *ngFor="let norma of _normaInterna" [value]="norma.nombre">{{norma.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">expand_circle_down</span>
+              <label for="" class="info">Presupuesto</label>
+              <select type="text" placeholder="vacio" formControlName="presupuesto" style="width:60%;">
+              <option class="" [disabled]="disbled1" *ngFor="let norma of _presupuesto" [value]="norma.nombre">{{norma.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">expand_circle_down</span>
+              <label for="" class="info">Pago de trámite RC</label>
+              <select type="text"  placeholder="vacio" formControlName="pagoTramite" style="width:60%;">
+                <option class="" [disabled]="disbled1" *ngFor="let norma of _presupuesto" [value]="norma.nombre">{{norma.nombre}}</option>
+                </select>
+            </div>
+          </div>
+
+          <div class="form">
+            <div class="label">
+              <span class="material-icons">notes</span>
+              <label for="" class="info">Observaciones</label>
+              <input [readOnly]="disbled1" type="text" placeholder="vacio" formControlName="observaciones" id="">
+            </div>
+          </div>
+          <button type="submit" class="save-avance">
+            <div>
+              <p> <span class="material-icons">cloud_upload</span>
+                Grabar cronograma
+              </p>
+            </div>
+
+          </button>
+        </form>
+
+
+
+        <mat-tab-group>
+          <mat-tab >
+            <ng-template mat-tab-label>
+              <div>
+                <p> <span class="material-icons">view_list</span>
+                  Tabla de actividades
+              </p>
+              </div>
+            </ng-template>
+            <div class="tabla-actividades">
+              <div class="titulo-tabla">
+
+                <div class="filtro">
+                  <span class="material-icons">search</span>
+                  <input type="text" placeholder="Escribe para filtrar..." name="" id="">
+                </div>
+              </div>
+            </div>
+            <div class="tabla">
+              <table>
+                <tr>
+                  <th> <span class="material-icons">format_color_text</span> Nombre</th>
+                  <th><span class="material-icons ">watch_later</span>Fecha de Entrega</th>
+                  <th><span class="material-icons">notifications_none</span>Recordar</th>
+                </tr>
+                <!-- Cuerpo de la table -->
+                <tr *ngFor="let actividad of actividades ">
+                  <td>
+                    {{actividad.nombre}} <span (click)="openDialog(actividad.id,actividad.cronogramaId)" class="abrir-modal w-20"><span
+                        class="material-icons rotated">height</span>ABRIR</span>
+
+                        
+                          <mat-icon class="abrir-modal1" 
+                          (click)="openDialog(actividad.id,actividad.cronogramaId)" >edit</mat-icon>
+                      
+                      </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+               
+
+              </table>
+
+
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div>
+                <p> <span class="material-icons text-lg">add</span>
+                  Nueva Actividad
+              </p>
+              </div>
+            </ng-template>
+            <form [formGroup]="formulario2" (ngSubmit)="grabarActividad()" novalidate >            
+              <div class="form">
+              <div class="label">
+                <span class="material-icons">title</span>
+                <label for="" class="info">Nombre de la actividad</label>
+                <input type="text" formControlName="nombre" placeholder="vacio" name="" id="">
+              </div>
+
+            </div>
+
+            <div class="form">
+              <div class="label">
+                <span class="material-icons">watch_later</span>
+                <label for="" class="info">Fecha de entrega</label>
+                <input type="datetime-local" formControlName="fechaEntrega" placeholder="vacio" name="" id="">
+              </div>
+
+            </div>
+
+            <div class="form">
+              <div class="label">
+                <span class="material-icons">notifications_none</span>
+                <label for="" class="info">Recordar</label>
+                <input type="number" formControlName="dias_notificacion" placeholder="vacio" name="" id="">
+              </div>
+            </div>
+
+            <div class="form">
+              <div class="label">
+                <span class="material-icons">notes</span>
+                <label for="" class="info">Notificar a</label>
+                <select  type="text" placeholder="vacio" formControlName="notificarA" style="width:60%;">
+                  <option  *ngFor="let persona of personas" [value]="persona.documento">{{persona.nombre1}} {{persona.id}} {{persona.nombre2}}
+                     {{persona.apellido1}} {{persona.apellido2}}</option>
+                  </select>
+              </div>
+            </div>
+            <button type="" class="save-avance">
+              <div >
+                <p> <span class="material-icons">cloud_upload</span>
+                  Grabar Actividad
+                </p>
+              </div>
+  
+            </button>
+          </form>
+{{formulario2.status}}
+          </mat-tab>
+
+        </mat-tab-group>
+
+
+
+      </div>
+
+    </mat-dialog-content>
+    <!-- 
+
+  <mat-dialog-actions align="start">
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
+  </mat-dialog-actions> -->
+  </div>
+</div>

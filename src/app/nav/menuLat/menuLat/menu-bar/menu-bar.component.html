@@ -1,0 +1,98 @@
+
+<div class="menu-bar">
+<mat-toolbar >
+    
+    <button (click)="openSideBar()" mat-icon-button class="btn">
+     <mat-icon >menu</mat-icon>
+   </button>
+  
+   <span> <img class="logo" 
+               (click)="remove()"
+               src="../../assets/images/logoSIA.png"  alt=""></span>
+   <span class="spacer"></span>
+
+   <div class="user-info">
+        <span id="perfil-imagen-small">
+            <!-- <img class="user-image" src="../../assets/images/logo.svg" alt="Rounded avatar"> -->
+            <img class="user-image" 
+                 src="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg" 
+                 alt="Rounded avatar">
+            
+        </span>
+        <span class="usuario"
+              (click)="showUserOption($event)"
+              >Nombre Usuario</span>
+        
+        <mat-icon class="rounded-full" 
+                  id="down"
+                  (click)="showUserOption($event)"
+                  >
+                  arrow_drop_down</mat-icon>
+        
+   </div>
+
+   
+
+ </mat-toolbar>
+
+
+ <div class="user-options"
+      (click)="showUserOption($event)"
+      *ngIf="viewUserOption">
+    
+    <div class="box-user">
+        
+
+        
+        <div class="box-user-info">
+            <span id="perfil-imagen">
+                <!-- <img class="user-image" src="../../assets/images/logo.svg" alt="Rounded avatar"> -->
+                <img class="user-image" src="https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg" alt="Rounded avatar">
+                
+            </span>
+            <div >
+                <span class="usuario" style="font-weight: bold;">Nombre Usuario</span>
+                <span>Ver tu perfil</span>
+            </div>
+            
+
+       </div>
+       
+       
+       <mat-divider></mat-divider>
+
+       <div class="box-user-options">
+        <p>
+            <mat-icon class="icon-option "
+                      
+            
+            >
+            person
+          </mat-icon>
+          <span>Roles</span>
+          
+          <mat-icon class="icons">arrow_forward_ios</mat-icon>
+          <span style="clear: both;" ></span>
+        </p>
+        <p>
+            <mat-icon class="icon-option "
+                      
+                    >exit_to_app
+            </mat-icon> 
+            <span>Salir</span>
+            
+            <mat-icon class="icons">arrow_forward_ios</mat-icon>
+            <span style="clear: both;" ></span>
+        </p>
+
+       </div>
+
+       <p class="derechos"> {{ propietario.propietario }} &#169; {{ propietario.anio }}</p>
+
+    </div>   
+    <!-- cierre de la box-user -->
+ 
+</div> 
+<!-- Cierre de para el div user options  -->
+
+</div>
